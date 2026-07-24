@@ -1,4 +1,4 @@
-package com.simple_shop.item_service.item.controller;
+package com.simple_shop.user_service.user.controller;
 
 import java.time.Instant;
 
@@ -9,50 +9,50 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.simple_shop.item_service.item.dto.ItemServiceErrorResponseDto;
-import com.simple_shop.item_service.item.dto.ItemServiceErrorResponseDto.ItemServiceErrorResponseDtoBuilder;
-import com.simple_shop.item_service.item.exceptions.InvalidItemRequestConstraintsException;
-import com.simple_shop.item_service.item.exceptions.ItemNotFoundException;
-import com.simple_shop.item_service.item.exceptions.ItemValidationException;
+import com.simple_shop.user_service.user.dto.UserServiceErrorResponseDto;
+import com.simple_shop.user_service.user.dto.UserServiceErrorResponseDto.UserServiceErrorResponseDtoBuilder;
+import com.simple_shop.user_service.user.exceptions.InvalidUserRequestConstraintsException;
+import com.simple_shop.user_service.user.exceptions.UserNotFoundException;
+import com.simple_shop.user_service.user.exceptions.UserValidationException;
 
-@RestControllerAdvice(assignableTypes = ItemController.class)
-public final class ItemControllerAdvice {
+@RestControllerAdvice(assignableTypes = UserController.class)
+public final class UserControllerAdvice {
 
-	public ItemControllerAdvice() {
+	public UserControllerAdvice() {
 		super();
 	}
 
-	@ExceptionHandler(ItemValidationException.class)
-	public ResponseEntity<ItemServiceErrorResponseDto> handleItemValidationException(
-			final ItemValidationException exception) {
+	@ExceptionHandler(UserValidationException.class)
+	public ResponseEntity<UserServiceErrorResponseDto> handleUserValidationException(
+			final UserValidationException exception) {
 
-		final ItemServiceErrorResponseDto responseDto = new ItemServiceErrorResponseDtoBuilder()//
+		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.BAD_REQUEST.value())//
-				.setMessage("Item validation failed")//
+				.setMessage("User validation failed")//
 				.setTimestamp(Instant.now())//
 				.build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
 	}
 
-	@ExceptionHandler(ItemNotFoundException.class)
-	public ResponseEntity<ItemServiceErrorResponseDto> handleItemNotFoundException(
-			final ItemNotFoundException exception) {
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<UserServiceErrorResponseDto> handleUserNotFoundException(
+			final UserNotFoundException exception) {
 
-		final ItemServiceErrorResponseDto responseDto = new ItemServiceErrorResponseDtoBuilder()//
+		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.NOT_FOUND.value())//
-				.setMessage("Item not found")//
+				.setMessage("User not found")//
 				.setTimestamp(Instant.now())//
 				.build();
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
 	}
 
-	@ExceptionHandler(InvalidItemRequestConstraintsException.class)
-	public ResponseEntity<ItemServiceErrorResponseDto> handleInvalidItemRequestConstraintsException(
-			final InvalidItemRequestConstraintsException exception) {
+	@ExceptionHandler(InvalidUserRequestConstraintsException.class)
+	public ResponseEntity<UserServiceErrorResponseDto> handleInvalidUserRequestConstraintsException(
+			final InvalidUserRequestConstraintsException exception) {
 
-		final ItemServiceErrorResponseDto responseDto = new ItemServiceErrorResponseDtoBuilder()//
+		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.BAD_REQUEST.value())//
 				.setMessage("Page setup is invalid")//
@@ -62,10 +62,10 @@ public final class ItemControllerAdvice {
 	}
 
 	@ExceptionHandler(IllegalStateException.class)
-	public ResponseEntity<ItemServiceErrorResponseDto> handleIllegalStateException(
+	public ResponseEntity<UserServiceErrorResponseDto> handleIllegalStateException(
 			final IllegalStateException exception) {
 
-		final ItemServiceErrorResponseDto responseDto = new ItemServiceErrorResponseDtoBuilder()//
+		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.INTERNAL_SERVER_ERROR.value())//
 				.setMessage("Internal server error")//
@@ -75,10 +75,10 @@ public final class ItemControllerAdvice {
 	}
 
 	@ExceptionHandler(ObjectOptimisticLockingFailureException.class)
-	public ResponseEntity<ItemServiceErrorResponseDto> handleObjectOptimisticLockingFailureException(
+	public ResponseEntity<UserServiceErrorResponseDto> handleObjectOptimisticLockingFailureException(
 			final ObjectOptimisticLockingFailureException exception) {
 
-		final ItemServiceErrorResponseDto responseDto = new ItemServiceErrorResponseDtoBuilder()//
+		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.CONFLICT.value())//
 				.setMessage("Trying to work with a stale version")//
@@ -88,10 +88,10 @@ public final class ItemControllerAdvice {
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<ItemServiceErrorResponseDto> handleHttpMessageNotReadableException(
+	public ResponseEntity<UserServiceErrorResponseDto> handleHttpMessageNotReadableException(
 			final HttpMessageNotReadableException exception) {
 
-		final ItemServiceErrorResponseDto responseDto = new ItemServiceErrorResponseDtoBuilder()//
+		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.BAD_REQUEST.value())//
 				.setMessage("Request contains bad content!")//

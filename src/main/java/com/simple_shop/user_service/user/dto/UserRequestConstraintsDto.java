@@ -1,24 +1,24 @@
-package com.simple_shop.item_service.item.dto;
+package com.simple_shop.user_service.user.dto;
 
-import com.simple_shop.item_service.item.dto.ItemDto.ItemDtoMember;
+import com.simple_shop.user_service.user.dto.UserDto.UserDtoMember;
 
 /*
  * Must never contain sensitive information, as the properties of this object
  * are passed via URL arguments.
  */
-public final class ItemRequestConstraintsDto {
+public final class UserRequestConstraintsDto {
 	private int pageIndex = 0;
 
 	private int pageSize = 20;
 
 	/**
-	 * This is the name of a member of the ItemDto class.
+	 * This is the name of a member of the UserDto class.
 	 */
-	private String sortingColumn = ItemDtoMember.TITLE.getDomainName();
+	private String sortingColumn = UserDtoMember.USERNAME.getDomainName();
 
 	private SortingDirection sortingDirection = SortingDirection.ASCENDING;
 
-	public ItemRequestConstraintsDto() {
+	public UserRequestConstraintsDto() {
 		super();
 	}
 

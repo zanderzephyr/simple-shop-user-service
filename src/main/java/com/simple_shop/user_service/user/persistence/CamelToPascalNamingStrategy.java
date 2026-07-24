@@ -1,10 +1,11 @@
-package com.simple_shop.item_service.item.persistence;
+package com.simple_shop.user_service.user.persistence;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import org.springframework.util.StringUtils;
 
+// TODO Move to common library
 public final class CamelToPascalNamingStrategy extends PhysicalNamingStrategyStandardImpl {
 	private static final long serialVersionUID = -1461529994984597004L;
 

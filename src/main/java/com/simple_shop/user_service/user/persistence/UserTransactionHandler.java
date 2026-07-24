@@ -1,0 +1,111 @@
+package com.simple_shop.user_service.user.persistence;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.simple_shop.user_service.user.model.User;
+import com.simple_shop.user_service.user.model.User.UserBuilder;
+import com.simple_shop.user_service.user.model.UserAction;
+import com.simple_shop.user_service.user.model.UserHistoryState;
+import com.simple_shop.user_service.user.model.UserHistoryState.UserHistoryStateBuilder;
+import com.simple_shop.user_service.user.repository.UserEntityRepository;
+import com.simple_shop.user_service.user.repository.UserHistoryStateEntityRepository;
+import com.simple_shop.user_service.utils.UserServiceUtils;
+
+@Component
+public class UserTransactionHandler {
+	private final UserEntityRepository userRepository;
+
+	private final UserHistoryStateEntityRepository userHistoryStateRepository;
+
+	public UserTransactionHandler(//
+			final UserEntityRepository userRepository, final UserHistoryStateEntityRepository historyRepository) {
+
+		super();
+
+		this.userRepository = userRepository;
+		this.userHistoryStateRepository = historyRepository;
+	}
+
+	@Transactional(readOnly = true)
+	public Page<User> findAll(final Pageable pageable) {
+		final Page<UserEntity> entityPage = this.userRepository.findAll(pageable);
+
+		return entityPage.map(UserEntityMapper::toDomain);
+	}
+
+	@Transactional(readOnly = true)
+	public User findById(final long id) {
+		final UserEntity entity = this.userRepository.findById(id).orElse(null); //
+		return entity == null ? null : UserEntityMapper.toDomain(entity);
+	}
+
+	@Transactional
+	public User saveUser(final User user, final UserAction userAction) {
+		final UserEntity userEntity = UserEntityMapper.toEntity(user);
+
+		/*
+		 * Flushing makes sure, the Id and Version fields are properly created / updated
+		 * before going on.
+		 */
+		final UserEntity savedUserEntity = this.userRepository.saveAndFlush(userEntity);
+
+		final User savedUser = UserEntityMapper.toDomain(savedUserEntity);
+
+		final UserHistoryState userHistoryState = UserTransactionHandler.buildUserHistoryState(savedUser, userAction);
+		final UserHistoryStateEntity userHistoryStateEntity = UserEntityMapper.toEntity(userHistoryState);
+		this.userHistoryStateRepository.save(userHistoryStateEntity);
+
+		return savedUser;
+	}
+
+	@Transactional
+	public User deleteUser(final long userId, final long executingUserId) {
+		final UserEntity existingUserEntity = this.userRepository.findById(userId).orElse(null);
+		if (existingUserEntity == null) {
+			return null;
+		}
+
+		final User existingUser = UserEntityMapper.toDomain(existingUserEntity);
+
+		/*
+		 * The main userEntity remains unmutated so it can be cleanly deleted via its
+		 * current database version.
+		 */
+		final User userDeletionState = UserTransactionHandler.finalizeUser(existingUser, executingUserId);
+		final UserHistoryState userHistoryState = UserTransactionHandler.buildUserHistoryState(userDeletionState,
+				UserAction.DELETE);
+		final UserHistoryStateEntity userHistoryStateEntity = UserEntityMapper.toEntity(userHistoryState);
+
+		this.userRepository.delete(existingUserEntity);
+		this.userHistoryStateRepository.save(userHistoryStateEntity);
+
+		return existingUser;
+	}
+
+	private static UserHistoryState buildUserHistoryState(final User user, final UserAction action) {
+		return new UserHistoryStateBuilder() //
+				.setId(null) //
+				.setUserId(user.getId()) //
+				.setUsername(user.getUsername()) //
+				.setFirstName(user.getFirstName()) //
+				.setMiddleNames(user.getMiddleNames()) //
+				.setLastName(user.getLastName()) //
+				.setEmail(user.getEmail()) //
+				.setUserType(user.getUserType()) //
+				.setAction(action) //
+				.setLastChange(user.getLastChange()) //
+				.setLastChangedBy(user.getLastChangedBy()) //
+				.setVersion(user.getVersion())//
+				.build();
+	}
+
+	public static User finalizeUser(final User user, final long userId) {
+		return UserBuilder.initFrom(user) //
+				.setLastChange(UserServiceUtils.createNow()) //
+				.setLastChangedBy(userId) //
+				.build();
+	}
+}

@@ -1,8 +1,8 @@
-package com.simple_shop.item_service.item.dto;
+package com.simple_shop.user_service.user.dto;
 
 import java.time.Instant;
 
-public final class ItemServiceErrorResponseDto {
+public final class UserServiceErrorResponseDto {
 	private final Instant timestamp;
 
 	private final String message;
@@ -11,7 +11,7 @@ public final class ItemServiceErrorResponseDto {
 
 	private final int httpState;
 
-	private ItemServiceErrorResponseDto(final ItemServiceErrorResponseDtoBuilder builder) throws IllegalStateException {
+	private UserServiceErrorResponseDto(final UserServiceErrorResponseDtoBuilder builder) throws IllegalStateException {
 		super();
 
 		builder.validate();
@@ -38,7 +38,7 @@ public final class ItemServiceErrorResponseDto {
 		return this.httpState;
 	}
 
-	public static final class ItemServiceErrorResponseDtoBuilder {
+	public static final class UserServiceErrorResponseDtoBuilder {
 		private Instant timestamp;
 
 		private String message;
@@ -47,7 +47,7 @@ public final class ItemServiceErrorResponseDto {
 
 		private Integer httpState;
 
-		public ItemServiceErrorResponseDtoBuilder() {
+		public UserServiceErrorResponseDtoBuilder() {
 			super();
 		}
 
@@ -55,7 +55,7 @@ public final class ItemServiceErrorResponseDto {
 			return this.timestamp;
 		}
 
-		public ItemServiceErrorResponseDtoBuilder setTimestamp(final Instant timestamp) {
+		public UserServiceErrorResponseDtoBuilder setTimestamp(final Instant timestamp) {
 			this.timestamp = timestamp;
 
 			return this;
@@ -65,7 +65,7 @@ public final class ItemServiceErrorResponseDto {
 			return this.message;
 		}
 
-		public ItemServiceErrorResponseDtoBuilder setMessage(final String message) {
+		public UserServiceErrorResponseDtoBuilder setMessage(final String message) {
 			this.message = message;
 
 			return this;
@@ -75,7 +75,7 @@ public final class ItemServiceErrorResponseDto {
 			return this.detail;
 		}
 
-		public ItemServiceErrorResponseDtoBuilder setDetail(final String detail) {
+		public UserServiceErrorResponseDtoBuilder setDetail(final String detail) {
 			this.detail = detail;
 
 			return this;
@@ -85,7 +85,7 @@ public final class ItemServiceErrorResponseDto {
 			return this.httpState;
 		}
 
-		public ItemServiceErrorResponseDtoBuilder setHttpState(final Integer httpState) {
+		public UserServiceErrorResponseDtoBuilder setHttpState(final Integer httpState) {
 			this.httpState = httpState;
 
 			return this;
@@ -105,8 +105,8 @@ public final class ItemServiceErrorResponseDto {
 			}
 		}
 
-		public ItemServiceErrorResponseDto build() {
-			return new ItemServiceErrorResponseDto(this);
+		public UserServiceErrorResponseDto build() {
+			return new UserServiceErrorResponseDto(this);
 		}
 	}
 }

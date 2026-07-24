@@ -1,4 +1,4 @@
-package com.simple_shop.item_service.item.dto.formatter;
+package com.simple_shop.user_service.user.dto.formatter;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
