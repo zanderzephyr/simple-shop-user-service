@@ -53,7 +53,7 @@ public class UserEntity {
 	@Column(name = "LastChange", nullable = false)
 	private LocalDateTime lastChange;
 
-	@Column(name = "LastChangedBy", nullable = false)
+	@Column(name = "LastChangedBy", nullable = true)
 	private Long lastChangedBy;
 
 	@Version

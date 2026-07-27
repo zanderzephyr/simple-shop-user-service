@@ -102,10 +102,10 @@ public class UserTransactionHandler {
 				.build();
 	}
 
-	public static User finalizeUser(final User user, final long userId) {
+	public static User finalizeUser(final User user, final Long executingUserId) {
 		return UserBuilder.initFrom(user) //
 				.setLastChange(UserServiceUtils.createNow()) //
-				.setLastChangedBy(userId) //
+				.setLastChangedBy(executingUserId) //
 				.build();
 	}
 }

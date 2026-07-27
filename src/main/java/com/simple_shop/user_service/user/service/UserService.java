@@ -29,10 +29,10 @@ public final class UserService {
 		return user;
 	}
 
-	public User createUser(final User userToCreate, final long userId) {
+	public User createUser(final User userToCreate, final Long executingUserId) {
 		UserService.validateUserToCreate(userToCreate);
 
-		final User finalizedUser = UserTransactionHandler.finalizeUser(userToCreate, userId);
+		final User finalizedUser = UserTransactionHandler.finalizeUser(userToCreate, executingUserId);
 		final User createdUser = this.userTransactionHandler.saveUser(finalizedUser, UserAction.CREATE);
 		return createdUser;
 	}
@@ -47,11 +47,11 @@ public final class UserService {
 		}
 	}
 
-	public User modifyUser(final User userToModify, final long userId) {
+	public User modifyUser(final User userToModify, final long executingUserId) {
 		// Ensure the user exists
 		this.findUserById(userToModify.getId());
 
-		final User finalizedUser = UserTransactionHandler.finalizeUser(userToModify, userId);
+		final User finalizedUser = UserTransactionHandler.finalizeUser(userToModify, executingUserId);
 
 		final User modifiedUser = this.userTransactionHandler.saveUser(finalizedUser, UserAction.MODIFY);
 

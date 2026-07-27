@@ -71,14 +71,16 @@ public final class UserController {
 	@PostMapping
 	public ResponseEntity<UserDto> createUser(@RequestBody final UserDto userDto) {
 		/*
-		 * TODO Validate session is ok. If it isn't, answer appropriately with negative
-		 * response.
+		 * TODO If there's a valid session: Make sure, it's an admin. If it isn't or any
+		 * other problem arises, answer appropriately with negative response.
+		 *
+		 * If there is no session, we are in the registration phase for some new user.
 		 */
 
 		final User userToCreate = UserDtoMapper.toDomain(userDto);
 
-		// TODO Replace userId by actual session user ID
-		final User createdUser = this.userService.createUser(userToCreate, 42l);
+		// TODO If there's a session, use the user ID of the session instead
+		final User createdUser = this.userService.createUser(userToCreate, null);
 		final UserDto createdUserDto = UserDtoMapper.toDto(createdUser);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
 	}
@@ -98,7 +100,7 @@ public final class UserController {
 			throw new UserValidationException("Version must not be null!");
 		}
 
-		// TODO Replace userId by actual session user ID
+		// TODO Replace userId with actual session user ID
 		final User modifiedUser = this.userService.modifyUser(userToModify, 42l);
 		final UserDto modifiedUserDto = UserDtoMapper.toDto(modifiedUser);
 		return ResponseEntity.status(HttpStatus.OK).body(modifiedUserDto);
@@ -115,7 +117,7 @@ public final class UserController {
 		 * response.
 		 */
 
-		// TODO Replace userId by actual session user ID
+		// TODO Replace userId with actual session user ID
 		this.userService.deleteUser(userId, 42l);
 
 		/*
