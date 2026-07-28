@@ -41,11 +41,8 @@ public class UserEntity {
 	@Column(name = "UserType", length = 20, nullable = false)
 	private UserType userType;
 
-	@Column(name = "SrpSalt", length = 128, nullable = false)
-	private String srpSalt;
-
-	@Column(name = "SrpVerifier", length = 1024, nullable = false)
-	private String srpVerifier;
+	@Column(name = "PasswordHash", length = 128, nullable = false)
+	private String passwordHash;
 
 	/**
 	 * In UTC.
@@ -120,20 +117,12 @@ public class UserEntity {
 		this.userType = userType;
 	}
 
-	public String getSrpSalt() {
-		return this.srpSalt;
+	public String getPasswordHash() {
+		return this.passwordHash;
 	}
 
-	public void setSrpSalt(final String srpSalt) {
-		this.srpSalt = srpSalt;
-	}
-
-	public String getSrpVerifier() {
-		return this.srpVerifier;
-	}
-
-	public void setSrpVerifier(final String srpVerifier) {
-		this.srpVerifier = srpVerifier;
+	public void setPasswordHash(final String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 
 	public LocalDateTime getLastChange() {
@@ -179,9 +168,7 @@ public class UserEntity {
 
 		USER_TYPE("userType"),
 
-		SRP_SALT("srpSalt"),
-
-		SRP_VERIFIER("srpVerifier"),
+		PASSWORD_HASH("passwordHash"),
 
 		LAST_CHANGE("lastChange"),
 

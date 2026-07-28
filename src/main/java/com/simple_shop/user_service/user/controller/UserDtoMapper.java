@@ -1,5 +1,7 @@
 package com.simple_shop.user_service.user.controller;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.simple_shop.user_service.user.dto.UserDto;
 import com.simple_shop.user_service.user.exceptions.UserValidationException;
 import com.simple_shop.user_service.user.model.User;
@@ -12,7 +14,7 @@ public final class UserDtoMapper {
 		throw new UnsupportedOperationException();
 	}
 
-	public static User toDomain(final UserDto userDto) {
+	public static User toDomain(final UserDto userDto, final PasswordEncoder passwordEncoder) {
 		return new UserBuilder()//
 				.setId(userDto.getId())//
 				.setUsername(userDto.getUsername())//
@@ -21,12 +23,23 @@ public final class UserDtoMapper {
 				.setLastName(userDto.getLastName())//
 				.setEmail(userDto.getEmail())//
 				.setUserType(UserDtoMapper.parseUserType(userDto.getUserType()))//
-				.setSrpSalt(userDto.getSrpSalt())//
-				.setSrpVerifier(userDto.getSrpVerifier())//
+				.setPasswordHash(UserDtoMapper.hashClientPassword(userDto.getPasswordHash(), passwordEncoder))//
 				.setLastChange(userDto.getLastChange())//
 				.setLastChangedBy(userDto.getLastChangedBy())//
 				.setVersion(userDto.getVersion())//
 				.build();
+	}
+
+	private static String hashClientPassword(final String clientPassword, final PasswordEncoder passwordEncoder) {
+		final String hash;
+
+		if (clientPassword == null || clientPassword.isBlank()) {
+			hash = null;
+		} else {
+			hash = passwordEncoder.encode(clientPassword);
+		}
+
+		return hash;
 	}
 
 	private static UserType parseUserType(final String userType) {
@@ -51,8 +64,6 @@ public final class UserDtoMapper {
 		userDto.setLastName(user.getLastName());
 		userDto.setEmail(user.getEmail());
 		userDto.setUserType(user.getUserType().name());
-		userDto.setSrpSalt(user.getSrpSalt());
-		userDto.setSrpVerifier(user.getSrpVerifier());
 		userDto.setLastChange(user.getLastChange());
 		userDto.setLastChangedBy(user.getLastChangedBy());
 		userDto.setVersion(user.getVersion());

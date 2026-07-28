@@ -32,7 +32,8 @@ public final class UserService {
 	public User createUser(final User userToCreate, final Long executingUserId) {
 		UserService.validateUserToCreate(userToCreate);
 
-		final User finalizedUser = UserTransactionHandler.finalizeUser(userToCreate, executingUserId);
+		final User finalizedUser = UserTransactionHandler.finalizeUserForDbProcessing(//
+				userToCreate, null, executingUserId);
 		final User createdUser = this.userTransactionHandler.saveUser(finalizedUser, UserAction.CREATE);
 		return createdUser;
 	}
@@ -42,6 +43,10 @@ public final class UserService {
 			throw new UserValidationException("A user to create must not have an ID!");
 		}
 
+		if (userToCreate.getPasswordHash() == null) {
+			throw new UserValidationException("A user to create must have a password!");
+		}
+
 		if (userToCreate.getVersion() != null) {
 			throw new UserValidationException("A user to create must not have a version!");
 		}
@@ -49,9 +54,10 @@ public final class UserService {
 
 	public User modifyUser(final User userToModify, final long executingUserId) {
 		// Ensure the user exists
-		this.findUserById(userToModify.getId());
+		final User existingUser = this.findUserById(userToModify.getId());
 
-		final User finalizedUser = UserTransactionHandler.finalizeUser(userToModify, executingUserId);
+		final User finalizedUser = UserTransactionHandler.finalizeUserForDbProcessing(//
+				userToModify, existingUser, executingUserId);
 
 		final User modifiedUser = this.userTransactionHandler.saveUser(finalizedUser, UserAction.MODIFY);
 

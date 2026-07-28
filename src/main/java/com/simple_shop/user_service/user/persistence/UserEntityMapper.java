@@ -20,8 +20,7 @@ public final class UserEntityMapper {
 				.setLastName(userEntity.getLastName()) //
 				.setEmail(userEntity.getEmail()) //
 				.setUserType(userEntity.getUserType()) //
-				.setSrpSalt(userEntity.getSrpSalt()) //
-				.setSrpVerifier(userEntity.getSrpVerifier()) //
+				.setPasswordHash(userEntity.getPasswordHash()) //
 				.setLastChange(userEntity.getLastChange()) //
 				.setLastChangedBy(userEntity.getLastChangedBy()) //
 				.setVersion(userEntity.getVersion())//
@@ -38,8 +37,7 @@ public final class UserEntityMapper {
 		entity.setLastName(user.getLastName());
 		entity.setEmail(user.getEmail());
 		entity.setUserType(user.getUserType());
-		entity.setSrpSalt(user.getSrpSalt());
-		entity.setSrpVerifier(user.getSrpVerifier());
+		entity.setPasswordHash(user.getPasswordHash());
 		entity.setLastChange(user.getLastChange());
 		entity.setLastChangedBy(user.getLastChangedBy());
 		entity.setVersion(user.getVersion());

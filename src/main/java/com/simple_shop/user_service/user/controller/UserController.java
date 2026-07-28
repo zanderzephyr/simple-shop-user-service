@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -48,6 +49,8 @@ public final class UserController {
 
 	private final UserService userService;
 
+	private final PasswordEncoder passwordEncoder;
+
 	private static Map<String, String> collectSortableColumns() {
 		final Map<String, String> columns = new HashMap<>();
 
@@ -62,10 +65,11 @@ public final class UserController {
 		return columns;
 	}
 
-	public UserController(final UserService userService) {
+	public UserController(final UserService userService, final PasswordEncoder passwordEncoder) {
 		super();
 
 		this.userService = userService;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@PostMapping
@@ -77,7 +81,7 @@ public final class UserController {
 		 * If there is no session, we are in the registration phase for some new user.
 		 */
 
-		final User userToCreate = UserDtoMapper.toDomain(userDto);
+		final User userToCreate = UserDtoMapper.toDomain(userDto, this.passwordEncoder);
 
 		// TODO If there's a session, use the user ID of the session instead
 		final User createdUser = this.userService.createUser(userToCreate, null);
@@ -92,7 +96,7 @@ public final class UserController {
 		 * response.
 		 */
 
-		final User userToModify = UserDtoMapper.toDomain(userDto);
+		final User userToModify = UserDtoMapper.toDomain(userDto, this.passwordEncoder);
 		if (!Long.valueOf(userId).equals(userToModify.getId())) {
 			throw new UserValidationException("Path ID and payload ID mismatch!");
 		}

@@ -74,7 +74,8 @@ public class UserTransactionHandler {
 		 * The main userEntity remains unmutated so it can be cleanly deleted via its
 		 * current database version.
 		 */
-		final User userDeletionState = UserTransactionHandler.finalizeUser(existingUser, executingUserId);
+		final User userDeletionState = UserTransactionHandler.finalizeUserForDbProcessing(//
+				existingUser, existingUser, executingUserId);
 		final UserHistoryState userHistoryState = UserTransactionHandler.buildUserHistoryState(userDeletionState,
 				UserAction.DELETE);
 		final UserHistoryStateEntity userHistoryStateEntity = UserEntityMapper.toEntity(userHistoryState);
@@ -102,8 +103,14 @@ public class UserTransactionHandler {
 				.build();
 	}
 
-	public static User finalizeUser(final User user, final Long executingUserId) {
-		return UserBuilder.initFrom(user) //
+	public static User finalizeUserForDbProcessing(//
+			final User newState, final User previousState, final Long executingUserId) {
+
+		final String passwordHash = newState.getPasswordHash();
+		final String newPasswordHash = passwordHash != null ? passwordHash : previousState.getPasswordHash();
+
+		return UserBuilder.initFrom(newState) //
+				.setPasswordHash(newPasswordHash) //
 				.setLastChange(UserServiceUtils.createNow()) //
 				.setLastChangedBy(executingUserId) //
 				.build();

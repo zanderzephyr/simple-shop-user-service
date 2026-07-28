@@ -22,9 +22,7 @@ public final class User {
 
 	private final UserType userType;
 
-	private final String srpSalt;
-
-	private final String srpVerifier;
+	private final String passwordHash;
 
 	/**
 	 * In UTC.
@@ -55,8 +53,7 @@ public final class User {
 		this.lastName = builder.getLastName();
 		this.email = builder.getEmail();
 		this.userType = builder.getUserType();
-		this.srpSalt = builder.getSrpSalt();
-		this.srpVerifier = builder.getSrpVerifier();
+		this.passwordHash = builder.getPasswordHash();
 		this.lastChange = builder.getLastChange();
 		this.lastChangedBy = builder.getLastChangedBy();
 		this.version = builder.getVersion();
@@ -90,12 +87,8 @@ public final class User {
 		return this.userType;
 	}
 
-	public String getSrpSalt() {
-		return this.srpSalt;
-	}
-
-	public String getSrpVerifier() {
-		return this.srpVerifier;
+	public String getPasswordHash() {
+		return this.passwordHash;
 	}
 
 	public LocalDateTime getLastChange() {
@@ -125,9 +118,7 @@ public final class User {
 
 		private UserType userType;
 
-		private String srpSalt;
-
-		private String srpVerifier;
+		private String passwordHash;
 
 		/**
 		 * In UTC.
@@ -212,22 +203,12 @@ public final class User {
 			return this;
 		}
 
-		public String getSrpSalt() {
-			return this.srpSalt;
+		public String getPasswordHash() {
+			return this.passwordHash;
 		}
 
-		public UserBuilder setSrpSalt(final String srpSalt) {
-			this.srpSalt = srpSalt;
-
-			return this;
-		}
-
-		public String getSrpVerifier() {
-			return this.srpVerifier;
-		}
-
-		public UserBuilder setSrpVerifier(final String srpVerifier) {
-			this.srpVerifier = srpVerifier;
+		public UserBuilder setPasswordHash(final String passwordHash) {
+			this.passwordHash = passwordHash;
 
 			return this;
 		}
@@ -295,12 +276,8 @@ public final class User {
 				throw new UserValidationException("Invalid user type!");
 			}
 
-			if (this.srpSalt == null || this.srpSalt.isBlank() || this.srpSalt.length() > 128) {
-				throw new UserValidationException("Invalid srp salt!");
-			}
-
-			if (this.srpVerifier == null || this.srpVerifier.isBlank() || this.srpVerifier.length() > 1024) {
-				throw new UserValidationException("Invalid srp verifier!");
+			if (this.passwordHash != null && this.passwordHash.isBlank() || this.passwordHash.length() > 128) {
+				throw new UserValidationException("Invalid password hash!");
 			}
 
 			if (this.lastChangedBy != null && this.lastChangedBy < 0) {
@@ -330,8 +307,7 @@ public final class User {
 					.setLastName(user.getLastName())//
 					.setEmail(user.getEmail())//
 					.setUserType(user.getUserType())//
-					.setSrpSalt(user.getSrpSalt())//
-					.setSrpVerifier(user.getSrpVerifier())//
+					.setPasswordHash(user.getPasswordHash())//
 					.setLastChange(user.getLastChange())//
 					.setLastChangedBy(user.getLastChangedBy())//
 					.setVersion(user.getVersion());
