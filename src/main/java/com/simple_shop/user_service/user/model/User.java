@@ -276,7 +276,7 @@ public final class User {
 				throw new UserValidationException("Invalid user type!");
 			}
 
-			if (this.passwordHash != null && this.passwordHash.isBlank() || this.passwordHash.length() > 128) {
+			if (this.passwordHash != null && (this.passwordHash.isBlank() || this.passwordHash.length() > 128)) {
 				throw new UserValidationException("Invalid password hash!");
 			}
 
