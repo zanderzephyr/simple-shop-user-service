@@ -81,11 +81,11 @@ public final class UserController {
 		 * If there is no session, we are in the registration phase for some new user.
 		 */
 
-		final User userToCreate = UserDtoMapper.toDomain(userDto, this.passwordEncoder);
+		final User userToCreate = UserMapper.toDomain(userDto, this.passwordEncoder);
 
 		// TODO If there's a session, use the user ID of the session instead
 		final User createdUser = this.userService.createUser(userToCreate, null);
-		final UserDto createdUserDto = UserDtoMapper.toDto(createdUser);
+		final UserDto createdUserDto = UserMapper.toDto(createdUser);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
 	}
 
@@ -96,7 +96,7 @@ public final class UserController {
 		 * response.
 		 */
 
-		final User userToModify = UserDtoMapper.toDomain(userDto, this.passwordEncoder);
+		final User userToModify = UserMapper.toDomain(userDto, this.passwordEncoder);
 		if (!Long.valueOf(userId).equals(userToModify.getId())) {
 			throw new UserValidationException("Path ID and payload ID mismatch!");
 		}
@@ -106,7 +106,7 @@ public final class UserController {
 
 		// TODO Replace userId with actual session user ID
 		final User modifiedUser = this.userService.modifyUser(userToModify, 42l);
-		final UserDto modifiedUserDto = UserDtoMapper.toDto(modifiedUser);
+		final UserDto modifiedUserDto = UserMapper.toDto(modifiedUser);
 		return ResponseEntity.status(HttpStatus.OK).body(modifiedUserDto);
 	}
 
@@ -142,7 +142,7 @@ public final class UserController {
 		this.validate(constraints);
 
 		final Pageable pageable = this.createPageable(constraints);
-		final Page<UserDto> page = this.userService.getAllUsers(pageable).map(UserDtoMapper::toDto);
+		final Page<UserDto> page = this.userService.getAllUsers(pageable).map(UserMapper::toDto);
 		final PagedModel<UserDto> pagedModel = new PagedModel<>(page);
 		return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
 	}
@@ -195,7 +195,7 @@ public final class UserController {
 		 */
 
 		final User user = this.userService.getUserById(userId);
-		final UserDto userDto = UserDtoMapper.toDto(user);
+		final UserDto userDto = UserMapper.toDto(user);
 		return ResponseEntity.status(HttpStatus.OK).body(userDto);
 	}
 }
