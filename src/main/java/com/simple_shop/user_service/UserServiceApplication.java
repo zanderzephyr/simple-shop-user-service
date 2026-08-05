@@ -5,6 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public final class UserServiceApplication {
+	public UserServiceApplication() {
+		super();
+	}
+
 	public static void main(final String[] args) {
 		SpringApplication.run(UserServiceApplication.class, args);
 	}
