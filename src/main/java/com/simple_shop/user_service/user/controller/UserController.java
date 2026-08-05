@@ -41,7 +41,7 @@ import com.simple_shop.user_service.user.service.UserService;
  * case, another controller with an incremented version could be created.
  */
 @RestController
-@RequestMapping("/api/users/v1")
+@RequestMapping("/api/v1/users")
 public final class UserController {
 	private static final long MAX_PAGE_SIZE = 100;
 
