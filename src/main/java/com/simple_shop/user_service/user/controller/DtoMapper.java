@@ -9,8 +9,8 @@ import com.simple_shop.user_service.user.model.User.UserBuilder;
 import com.simple_shop.user_service.user.model.UserType;
 import com.simple_shop.user_service.utils.DataTypeUtils;
 
-public final class UserMapper {
-	private UserMapper() {
+public final class DtoMapper {
+	private DtoMapper() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -22,8 +22,8 @@ public final class UserMapper {
 				.setMiddleNames(userDto.getMiddleNames())//
 				.setLastName(userDto.getLastName())//
 				.setEmail(userDto.getEmail())//
-				.setUserType(UserMapper.parseUserType(userDto.getUserType()))//
-				.setPasswordHash(UserMapper.hashClientPassword(userDto.getPasswordHash(), passwordEncoder))//
+				.setUserType(DtoMapper.parseUserType(userDto.getUserType()))//
+				.setPasswordHash(DtoMapper.hashClientPassword(userDto.getPasswordHash(), passwordEncoder))//
 				.setLastChange(userDto.getLastChange())//
 				.setLastChangedBy(userDto.getLastChangedBy())//
 				.setVersion(userDto.getVersion())//

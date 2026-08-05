@@ -6,8 +6,8 @@ import com.simple_shop.user_service.user.model.UserHistoryState;
 import com.simple_shop.user_service.user.model.UserHistoryState.UserHistoryStateBuilder;
 import com.simple_shop.user_service.utils.UserServiceUtils;
 
-public final class UserEntityMapper {
-	private UserEntityMapper() {
+public final class PersistenceMapper {
+	private PersistenceMapper() {
 		throw new UnsupportedOperationException();
 	}
 

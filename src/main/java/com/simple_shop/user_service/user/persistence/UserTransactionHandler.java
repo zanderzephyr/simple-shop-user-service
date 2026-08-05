@@ -33,18 +33,18 @@ public class UserTransactionHandler {
 	public Page<User> findAll(final Pageable pageable) {
 		final Page<UserEntity> entityPage = this.userRepository.findAll(pageable);
 
-		return entityPage.map(UserEntityMapper::toDomain);
+		return entityPage.map(PersistenceMapper::toDomain);
 	}
 
 	@Transactional(readOnly = true)
 	public User findById(final long id) {
 		final UserEntity entity = this.userRepository.findById(id).orElse(null); //
-		return entity == null ? null : UserEntityMapper.toDomain(entity);
+		return entity == null ? null : PersistenceMapper.toDomain(entity);
 	}
 
 	@Transactional
 	public User saveUser(final User user, final UserAction userAction) {
-		final UserEntity userEntity = UserEntityMapper.toEntity(user);
+		final UserEntity userEntity = PersistenceMapper.toEntity(user);
 
 		/*
 		 * Flushing makes sure, the Id and Version fields are properly created / updated
@@ -52,10 +52,10 @@ public class UserTransactionHandler {
 		 */
 		final UserEntity savedUserEntity = this.userRepository.saveAndFlush(userEntity);
 
-		final User savedUser = UserEntityMapper.toDomain(savedUserEntity);
+		final User savedUser = PersistenceMapper.toDomain(savedUserEntity);
 
 		final UserHistoryState userHistoryState = UserTransactionHandler.buildUserHistoryState(savedUser, userAction);
-		final UserHistoryStateEntity userHistoryStateEntity = UserEntityMapper.toEntity(userHistoryState);
+		final UserHistoryStateEntity userHistoryStateEntity = PersistenceMapper.toEntity(userHistoryState);
 		this.userHistoryStateRepository.save(userHistoryStateEntity);
 
 		return savedUser;
@@ -68,7 +68,7 @@ public class UserTransactionHandler {
 			return null;
 		}
 
-		final User existingUser = UserEntityMapper.toDomain(existingUserEntity);
+		final User existingUser = PersistenceMapper.toDomain(existingUserEntity);
 
 		/*
 		 * The main userEntity remains unmutated so it can be cleanly deleted via its
@@ -78,7 +78,7 @@ public class UserTransactionHandler {
 				existingUser, existingUser, executingUserId);
 		final UserHistoryState userHistoryState = UserTransactionHandler.buildUserHistoryState(userDeletionState,
 				UserAction.DELETE);
-		final UserHistoryStateEntity userHistoryStateEntity = UserEntityMapper.toEntity(userHistoryState);
+		final UserHistoryStateEntity userHistoryStateEntity = PersistenceMapper.toEntity(userHistoryState);
 
 		this.userRepository.delete(existingUserEntity);
 		this.userHistoryStateRepository.save(userHistoryStateEntity);
