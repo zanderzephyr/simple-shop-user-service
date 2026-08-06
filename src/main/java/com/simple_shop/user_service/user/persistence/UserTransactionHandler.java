@@ -10,18 +10,18 @@ import com.simple_shop.user_service.user.model.User.UserBuilder;
 import com.simple_shop.user_service.user.model.UserAction;
 import com.simple_shop.user_service.user.model.UserHistoryState;
 import com.simple_shop.user_service.user.model.UserHistoryState.UserHistoryStateBuilder;
-import com.simple_shop.user_service.user.repository.UserEntityRepository;
-import com.simple_shop.user_service.user.repository.UserHistoryStateEntityRepository;
+import com.simple_shop.user_service.user.repository.UserRepository;
+import com.simple_shop.user_service.user.repository.UserHistoryStateRepository;
 import com.simple_shop.user_service.utils.UserServiceUtils;
 
 @Component
 public class UserTransactionHandler {
-	private final UserEntityRepository userRepository;
+	private final UserRepository userRepository;
 
-	private final UserHistoryStateEntityRepository userHistoryStateRepository;
+	private final UserHistoryStateRepository userHistoryStateRepository;
 
 	public UserTransactionHandler(//
-			final UserEntityRepository userRepository, final UserHistoryStateEntityRepository historyRepository) {
+			final UserRepository userRepository, final UserHistoryStateRepository historyRepository) {
 
 		super();
 
