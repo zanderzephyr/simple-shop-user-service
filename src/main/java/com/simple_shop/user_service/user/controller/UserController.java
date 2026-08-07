@@ -114,19 +114,19 @@ public final class UserController {
 	// Using ModelAttribute to prevent GET requests without body causing issues
 	@GetMapping
 	public ResponseEntity<PagedModel<UserDto>> getUsers(
-			@ModelAttribute final RequestConstraintsDto userRequestConstraintsDto) {
+			@ModelAttribute final RequestConstraintsDto requestConstraintsDto) {
 		/*
 		 * TODO Validate session is ok. If it isn't, answer appropriately with negative
 		 * response.
 		 */
 
-		if (userRequestConstraintsDto == null) {
+		if (requestConstraintsDto == null) {
 			throw new InvalidRequestException("No user request constraints!");
 		}
 
-		final RequestConstraints userRequestConstraints = DtoMapper.toDomain(userRequestConstraintsDto);
+		final RequestConstraints requestConstraints = DtoMapper.toDomain(requestConstraintsDto);
 
-		final Pageable pageable = this.createPageable(userRequestConstraints);
+		final Pageable pageable = this.createPageable(requestConstraints);
 		final Page<UserDto> page = this.userService.getAllUsers(pageable).map(DtoMapper::toDto);
 		final PagedModel<UserDto> pagedModel = new PagedModel<>(page);
 		return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
