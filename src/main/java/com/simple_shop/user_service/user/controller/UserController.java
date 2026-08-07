@@ -127,7 +127,7 @@ public final class UserController {
 		final RequestConstraints requestConstraints = DtoMapper.toDomain(requestConstraintsDto);
 
 		final Pageable pageable = this.createPageable(requestConstraints);
-		final Page<UserDto> page = this.userService.getAllUsers(pageable).map(DtoMapper::toDto);
+		final Page<UserDto> page = this.userService.getUsers(pageable).map(DtoMapper::toDto);
 		final PagedModel<UserDto> pagedModel = new PagedModel<>(page);
 		return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
 	}

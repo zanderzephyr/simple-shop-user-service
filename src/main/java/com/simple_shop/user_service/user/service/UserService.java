@@ -23,7 +23,7 @@ public final class UserService {
 		this.userTransactionHandler = userTransactionHandler;
 	}
 
-	public Page<User> getAllUsers(final Pageable pageable) {
+	public Page<User> getUsers(final Pageable pageable) {
 		return this.userTransactionHandler.findAll(pageable);
 	}
 
