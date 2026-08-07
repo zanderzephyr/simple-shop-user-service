@@ -132,6 +132,7 @@ public final class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
 	}
 
+	// TODO Move to common lib
 	private Pageable createPageable(final RequestConstraints constraints) {
 		final Direction direction = UserController.convert(constraints.getSortingDirection());
 		final String sortingColumnEntity = constraints.getSortingColumn();
@@ -139,6 +140,7 @@ public final class UserController {
 		return PageRequest.of(constraints.getPageIndex(), constraints.getPageSize(), sort);
 	}
 
+	// TODO Move to common lib
 	private static Direction convert(final SortingDirection sortingDirection) {
 		final Direction direction;
 
