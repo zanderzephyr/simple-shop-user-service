@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.simple_shop.user_service.user.dto.UserDto;
 import com.simple_shop.user_service.user.dto.RequestConstraintsDto;
+import com.simple_shop.user_service.user.dto.UserDto;
 import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
+import com.simple_shop.user_service.user.model.RequestConstraints;
 import com.simple_shop.user_service.user.model.SortingDirection;
 import com.simple_shop.user_service.user.model.User;
-import com.simple_shop.user_service.user.model.RequestConstraints;
 import com.simple_shop.user_service.user.service.UserService;
 
 @RestController
@@ -53,6 +53,10 @@ public final class UserController {
 		 * If there is no session, we are in the registration phase for some new user.
 		 */
 
+		if (userDto == null) {
+			throw new InvalidRequestException("No user!");
+		}
+
 		final User userToCreate = DtoMapper.toDomain(userDto, this.passwordEncoder);
 
 		// TODO If there's a session, use the user ID of the session instead
@@ -67,6 +71,10 @@ public final class UserController {
 		 * TODO Validate session is ok. If it isn't, answer appropriately with negative
 		 * response.
 		 */
+
+		if (userDto == null) {
+			throw new InvalidRequestException("No user!");
+		}
 
 		final User userToModify = DtoMapper.toDomain(userDto, this.passwordEncoder);
 		if (!Long.valueOf(userId).equals(userToModify.getId())) {
