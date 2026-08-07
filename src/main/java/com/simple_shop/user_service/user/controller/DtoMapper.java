@@ -118,16 +118,16 @@ public final class DtoMapper {
 		return loginResponseDto;
 	}
 
-	public static RequestConstraints toDomain(final RequestConstraintsDto userRequestConstraintsDto) {
+	public static RequestConstraints toDomain(final RequestConstraintsDto requestConstraintsDto) {
 		try {
 			return new RequestConstraintsBuilder()//
-					.setPageIndex(userRequestConstraintsDto.getPageIndex() != null ? //
-							userRequestConstraintsDto.getPageIndex() : 0)//
-					.setPageSize(userRequestConstraintsDto.getPageSize() != null ? //
-							userRequestConstraintsDto.getPageSize() : 20)//
-					.setSortingColumn(DtoMapper.getSortableColumnValue(userRequestConstraintsDto.getSortingColumn()))//
-					.setSortingDirection(userRequestConstraintsDto.getSortingDirection() != null ? //
-							DataTypeUtils.parseEnum(userRequestConstraintsDto.getSortingDirection(),
+					.setPageIndex(requestConstraintsDto.getPageIndex() != null ? //
+							requestConstraintsDto.getPageIndex() : 0)//
+					.setPageSize(requestConstraintsDto.getPageSize() != null ? //
+							requestConstraintsDto.getPageSize() : 20)//
+					.setSortingColumn(DtoMapper.getSortableColumnValue(requestConstraintsDto.getSortingColumn()))//
+					.setSortingDirection(requestConstraintsDto.getSortingDirection() != null ? //
+							DataTypeUtils.parseEnum(requestConstraintsDto.getSortingDirection(),
 									SortingDirection.class)
 							: SortingDirection.ASCENDING)//
 					.build();
