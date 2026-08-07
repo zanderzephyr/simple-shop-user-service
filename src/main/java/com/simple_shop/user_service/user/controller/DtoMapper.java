@@ -9,7 +9,7 @@ import com.simple_shop.user_service.user.dto.LoginRequestDto;
 import com.simple_shop.user_service.user.dto.LoginResponseDto;
 import com.simple_shop.user_service.user.dto.UserDto;
 import com.simple_shop.user_service.user.dto.UserDto.UserDtoMember;
-import com.simple_shop.user_service.user.dto.UserRequestConstraintsDto;
+import com.simple_shop.user_service.user.dto.RequestConstraintsDto;
 import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
 import com.simple_shop.user_service.user.model.LoginRequest;
 import com.simple_shop.user_service.user.model.LoginRequest.LoginRequestBuilder;
@@ -17,8 +17,8 @@ import com.simple_shop.user_service.user.model.LoginResponse;
 import com.simple_shop.user_service.user.model.SortingDirection;
 import com.simple_shop.user_service.user.model.User;
 import com.simple_shop.user_service.user.model.User.UserBuilder;
-import com.simple_shop.user_service.user.model.UserRequestConstraints;
-import com.simple_shop.user_service.user.model.UserRequestConstraints.UserRequestConstraintsBuilder;
+import com.simple_shop.user_service.user.model.RequestConstraints;
+import com.simple_shop.user_service.user.model.RequestConstraints.RequestConstraintsBuilder;
 import com.simple_shop.user_service.user.model.UserType;
 import com.simple_shop.user_service.user.persistence.UserEntity.UserEntityMember;
 import com.simple_shop.user_service.utils.DataTypeUtils;
@@ -118,9 +118,9 @@ public final class DtoMapper {
 		return loginResponseDto;
 	}
 
-	public static UserRequestConstraints toDomain(final UserRequestConstraintsDto userRequestConstraintsDto) {
+	public static RequestConstraints toDomain(final RequestConstraintsDto userRequestConstraintsDto) {
 		try {
-			return new UserRequestConstraintsBuilder()//
+			return new RequestConstraintsBuilder()//
 					.setPageIndex(userRequestConstraintsDto.getPageIndex() != null ? //
 							userRequestConstraintsDto.getPageIndex() : 0)//
 					.setPageSize(userRequestConstraintsDto.getPageSize() != null ? //

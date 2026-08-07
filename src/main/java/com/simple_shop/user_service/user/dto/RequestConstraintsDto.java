@@ -1,10 +1,11 @@
 package com.simple_shop.user_service.user.dto;
 
-/*
+// TODO Move to common lib
+/**
  * Must never contain sensitive information, as the properties of this object
  * are passed via URL arguments.
  */
-public final class UserRequestConstraintsDto {
+public final class RequestConstraintsDto {
 	private Integer pageIndex;
 
 	private Integer pageSize;
@@ -16,7 +17,7 @@ public final class UserRequestConstraintsDto {
 
 	private String sortingDirection;
 
-	public UserRequestConstraintsDto() {
+	public RequestConstraintsDto() {
 		super();
 	}
 

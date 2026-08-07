@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.simple_shop.user_service.user.dto.UserDto;
-import com.simple_shop.user_service.user.dto.UserRequestConstraintsDto;
+import com.simple_shop.user_service.user.dto.RequestConstraintsDto;
 import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
 import com.simple_shop.user_service.user.model.SortingDirection;
 import com.simple_shop.user_service.user.model.User;
-import com.simple_shop.user_service.user.model.UserRequestConstraints;
+import com.simple_shop.user_service.user.model.RequestConstraints;
 import com.simple_shop.user_service.user.service.UserService;
 
 @RestController
@@ -106,7 +106,7 @@ public final class UserController {
 	// Using ModelAttribute to prevent GET requests without body causing issues
 	@GetMapping
 	public ResponseEntity<PagedModel<UserDto>> getUsers(
-			@ModelAttribute final UserRequestConstraintsDto userRequestConstraintsDto) {
+			@ModelAttribute final RequestConstraintsDto userRequestConstraintsDto) {
 		/*
 		 * TODO Validate session is ok. If it isn't, answer appropriately with negative
 		 * response.
@@ -116,7 +116,7 @@ public final class UserController {
 			throw new InvalidRequestException("No user request constraints!");
 		}
 
-		final UserRequestConstraints userRequestConstraints = DtoMapper.toDomain(userRequestConstraintsDto);
+		final RequestConstraints userRequestConstraints = DtoMapper.toDomain(userRequestConstraintsDto);
 
 		final Pageable pageable = this.createPageable(userRequestConstraints);
 		final Page<UserDto> page = this.userService.getAllUsers(pageable).map(DtoMapper::toDto);
@@ -124,7 +124,7 @@ public final class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
 	}
 
-	private Pageable createPageable(final UserRequestConstraints constraints) {
+	private Pageable createPageable(final RequestConstraints constraints) {
 		final Direction direction = UserController.convert(constraints.getSortingDirection());
 		final String sortingColumnEntity = constraints.getSortingColumn();
 		final Sort sort = Sort.by(Arrays.asList(new Order(direction, sortingColumnEntity)));

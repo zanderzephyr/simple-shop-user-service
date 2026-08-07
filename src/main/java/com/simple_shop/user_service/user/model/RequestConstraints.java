@@ -2,7 +2,8 @@ package com.simple_shop.user_service.user.model;
 
 import java.util.Objects;
 
-public final class UserRequestConstraints {
+// TODO Move to common lib
+public final class RequestConstraints {
 	private final int pageIndex;
 
 	private final int pageSize;
@@ -11,7 +12,7 @@ public final class UserRequestConstraints {
 
 	private final SortingDirection sortingDirection;
 
-	private UserRequestConstraints(final UserRequestConstraintsBuilder builder) throws IllegalStateException {
+	private RequestConstraints(final RequestConstraintsBuilder builder) throws IllegalStateException {
 		super();
 
 		Objects.requireNonNull(builder);
@@ -40,7 +41,7 @@ public final class UserRequestConstraints {
 		return this.sortingDirection;
 	}
 
-	public static final class UserRequestConstraintsBuilder {
+	public static final class RequestConstraintsBuilder {
 		private static final long MAX_PAGE_SIZE = 100;
 
 		private Integer pageIndex;
@@ -51,7 +52,7 @@ public final class UserRequestConstraints {
 
 		private SortingDirection sortingDirection;
 
-		public UserRequestConstraintsBuilder() {
+		public RequestConstraintsBuilder() {
 			super();
 		}
 
@@ -59,7 +60,7 @@ public final class UserRequestConstraints {
 			return this.pageIndex;
 		}
 
-		public UserRequestConstraintsBuilder setPageIndex(final Integer pageIndex) {
+		public RequestConstraintsBuilder setPageIndex(final Integer pageIndex) {
 			this.pageIndex = pageIndex;
 
 			return this;
@@ -69,7 +70,7 @@ public final class UserRequestConstraints {
 			return this.pageSize;
 		}
 
-		public UserRequestConstraintsBuilder setPageSize(final Integer pageSize) {
+		public RequestConstraintsBuilder setPageSize(final Integer pageSize) {
 			this.pageSize = pageSize;
 
 			return this;
@@ -79,7 +80,7 @@ public final class UserRequestConstraints {
 			return this.sortingColumn;
 		}
 
-		public UserRequestConstraintsBuilder setSortingColumn(final String sortingColumn) {
+		public RequestConstraintsBuilder setSortingColumn(final String sortingColumn) {
 			this.sortingColumn = sortingColumn;
 
 			return this;
@@ -89,7 +90,7 @@ public final class UserRequestConstraints {
 			return this.sortingDirection;
 		}
 
-		public UserRequestConstraintsBuilder setSortingDirection(final SortingDirection sortingDirection) {
+		public RequestConstraintsBuilder setSortingDirection(final SortingDirection sortingDirection) {
 			this.sortingDirection = sortingDirection;
 
 			return this;
@@ -100,8 +101,7 @@ public final class UserRequestConstraints {
 				throw new IllegalStateException("Invalid pageIndex!");
 			}
 
-			if (this.pageSize == null || this.pageSize < 1
-					|| this.pageSize > UserRequestConstraintsBuilder.MAX_PAGE_SIZE) {
+			if (this.pageSize == null || this.pageSize < 1 || this.pageSize > RequestConstraintsBuilder.MAX_PAGE_SIZE) {
 				throw new IllegalStateException("Invalid page size!");
 			}
 
@@ -114,8 +114,8 @@ public final class UserRequestConstraints {
 			}
 		}
 
-		public UserRequestConstraints build() throws IllegalStateException {
-			return new UserRequestConstraints(this);
+		public RequestConstraints build() throws IllegalStateException {
+			return new RequestConstraints(this);
 		}
 	}
 }
