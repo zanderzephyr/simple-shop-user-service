@@ -90,9 +90,11 @@ public final class UserService {
 		final LoginResponseBuilder loginResponseBuilder = new LoginResponseBuilder();
 
 		final User user = this.userTransactionHandler.findByUsername(loginRequest.getUsername());
-		if (user != null && user.getPasswordHash().equals(loginRequest.getPasswordHash())) {
-			loginResponseBuilder.setSuccess(true);
+		if (user != null) {
 			loginResponseBuilder.setUserId(user.getId());
+			if (user.getPasswordHash().equals(loginRequest.getPasswordHash())) {
+				loginResponseBuilder.setSuccess(true);
+			}
 		} else {
 			loginResponseBuilder.setSuccess(false);
 		}
