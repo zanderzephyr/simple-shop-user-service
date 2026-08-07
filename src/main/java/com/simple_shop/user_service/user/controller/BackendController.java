@@ -29,7 +29,7 @@ public final class BackendController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@GetMapping
+	@GetMapping("/verifyLoginCredentials")
 	public ResponseEntity<LoginResponseDto> verifyLoginCredentials(@RequestBody final LoginRequestDto loginRequestDto) {
 		if (loginRequestDto == null) {
 			throw new InvalidRequestException("No login request!");
