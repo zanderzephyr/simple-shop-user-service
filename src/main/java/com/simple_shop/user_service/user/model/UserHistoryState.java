@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.simple_shop.user_service.user.exceptions.UserValidationException;
 import com.simple_shop.user_service.utils.UserServiceUtils;
 
 public final class UserHistoryState {
@@ -32,7 +31,7 @@ public final class UserHistoryState {
 
 	private final Long version;
 
-	private UserHistoryState(final UserHistoryStateBuilder builder) {
+	private UserHistoryState(final UserHistoryStateBuilder builder) throws IllegalStateException {
 		super();
 
 		builder.validate();
@@ -251,58 +250,58 @@ public final class UserHistoryState {
 			return this;
 		}
 
-		public void validate() {
+		public void validate() throws IllegalStateException {
 			if (this.id != null && this.id < 0) {
-				throw new UserValidationException("Invalid ID!");
+				throw new IllegalStateException("Invalid ID!");
 			}
 
 			if (this.userId == null || this.userId < 0) {
-				throw new UserValidationException("Invalid user ID!");
+				throw new IllegalStateException("Invalid user ID!");
 			}
 
 			if (this.username == null || this.username.isBlank() || this.username.length() > 30) {
-				throw new UserValidationException("Invalid username!");
+				throw new IllegalStateException("Invalid username!");
 			}
 
 			if (this.firstName == null || this.firstName.isBlank() || this.firstName.length() > 30) {
-				throw new UserValidationException("Invalid first name!");
+				throw new IllegalStateException("Invalid first name!");
 			}
 
 			final String middleNameString = UserServiceUtils.convertMiddleNames(this.middleNames);
 			if (middleNameString != null && middleNameString.length() > 100) {
-				throw new UserValidationException("Invalid middle names!");
+				throw new IllegalStateException("Invalid middle names!");
 			}
 
 			if (this.lastName == null || this.lastName.isBlank() || this.lastName.length() > 30) {
-				throw new UserValidationException("Invalid last name!");
+				throw new IllegalStateException("Invalid last name!");
 			}
 
 			if (this.email == null || this.email.isBlank() || this.email.length() > 254) {
-				throw new UserValidationException("Invalid email!");
+				throw new IllegalStateException("Invalid email!");
 			}
 
 			if (this.userType == null) {
-				throw new UserValidationException("Invalid user type!");
+				throw new IllegalStateException("Invalid user type!");
 			}
 
 			if (this.action == null) {
-				throw new IllegalArgumentException("Invalid action!");
+				throw new IllegalStateException("Invalid action!");
 			}
 
 			if (this.lastChange == null) {
-				throw new IllegalArgumentException("Invalid last change!");
+				throw new IllegalStateException("Invalid last change!");
 			}
 
 			if (this.lastChangedBy != null && this.lastChangedBy < 0) {
-				throw new UserValidationException("Invalid last changed by!");
+				throw new IllegalStateException("Invalid last changed by!");
 			}
 
 			if (this.version != null && this.version < 0) {
-				throw new UserValidationException("Invalid version!");
+				throw new IllegalStateException("Invalid version!");
 			}
 		}
 
-		public UserHistoryState build() {
+		public UserHistoryState build() throws IllegalStateException {
 			return new UserHistoryState(this);
 		}
 

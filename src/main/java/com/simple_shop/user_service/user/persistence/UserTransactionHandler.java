@@ -10,8 +10,8 @@ import com.simple_shop.user_service.user.model.User.UserBuilder;
 import com.simple_shop.user_service.user.model.UserAction;
 import com.simple_shop.user_service.user.model.UserHistoryState;
 import com.simple_shop.user_service.user.model.UserHistoryState.UserHistoryStateBuilder;
-import com.simple_shop.user_service.user.repository.UserRepository;
 import com.simple_shop.user_service.user.repository.UserHistoryStateRepository;
+import com.simple_shop.user_service.user.repository.UserRepository;
 import com.simple_shop.user_service.utils.UserServiceUtils;
 
 @Component
@@ -39,6 +39,12 @@ public class UserTransactionHandler {
 	@Transactional(readOnly = true)
 	public User findById(final long id) {
 		final UserEntity entity = this.userRepository.findById(id).orElse(null); //
+		return entity == null ? null : PersistenceMapper.toDomain(entity);
+	}
+
+	@Transactional(readOnly = true)
+	public User findByUsername(final String username) {
+		final UserEntity entity = this.userRepository.findByUsername(username).orElse(null); //
 		return entity == null ? null : PersistenceMapper.toDomain(entity);
 	}
 

@@ -28,8 +28,7 @@ import com.simple_shop.user_service.user.dto.UserDto;
 import com.simple_shop.user_service.user.dto.UserDto.UserDtoMember;
 import com.simple_shop.user_service.user.dto.UserRequestConstraintsDto;
 import com.simple_shop.user_service.user.dto.UserRequestConstraintsDto.SortingDirection;
-import com.simple_shop.user_service.user.exceptions.InvalidUserRequestConstraintsException;
-import com.simple_shop.user_service.user.exceptions.UserValidationException;
+import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
 import com.simple_shop.user_service.user.model.User;
 import com.simple_shop.user_service.user.persistence.UserEntity.UserEntityMember;
 import com.simple_shop.user_service.user.service.UserService;
@@ -98,10 +97,10 @@ public final class UserController {
 
 		final User userToModify = DtoMapper.toDomain(userDto, this.passwordEncoder);
 		if (!Long.valueOf(userId).equals(userToModify.getId())) {
-			throw new UserValidationException("Path ID and payload ID mismatch!");
+			throw new InvalidRequestException("Path ID and payload ID mismatch!");
 		}
 		if (userDto.getVersion() == null) {
-			throw new UserValidationException("Version must not be null!");
+			throw new InvalidRequestException("Version must not be null!");
 		}
 
 		// TODO Replace userId with actual session user ID
@@ -155,7 +154,7 @@ public final class UserController {
 		} else if (SortingDirection.DESCENDING.equals(sortingDirection)) {
 			direction = Direction.DESC;
 		} else {
-			throw new IllegalStateException("Unexpected sorting direction: " + sortingDirection);
+			throw new InvalidRequestException("Unexpected sorting direction: " + sortingDirection);
 		}
 		final String sortingColumnEntity = UserController.SORTABLE_DTO_TO_ENTITY_COLUMNS
 				.get(constraints.getSortingColumn());
@@ -164,26 +163,24 @@ public final class UserController {
 		return PageRequest.of(constraints.getPageIndex(), constraints.getPageSize(), sort);
 	}
 
-	private void validate(final UserRequestConstraintsDto constraints) throws InvalidUserRequestConstraintsException {
+	private void validate(final UserRequestConstraintsDto constraints) throws InvalidRequestException {
 		if (constraints == null) {
-			throw new InvalidUserRequestConstraintsException("No user search constraints!");
+			throw new InvalidRequestException("No user search constraints!");
 		}
 
 		final int pageIndex = constraints.getPageIndex();
 		if (pageIndex < 0) {
-			throw new InvalidUserRequestConstraintsException("Page index must not be negative, but was " + pageIndex);
+			throw new InvalidRequestException("Page index must not be negative, but was " + pageIndex);
 		}
 
 		final int pageSize = constraints.getPageSize();
 		if (pageSize <= 0 || pageSize > UserController.MAX_PAGE_SIZE) {
-			throw new InvalidUserRequestConstraintsException(
-					"Page size must be in [1," + UserController.MAX_PAGE_SIZE + "]!");
+			throw new InvalidRequestException("Page size must be in [1," + UserController.MAX_PAGE_SIZE + "]!");
 		}
 
 		final String sortingColumn = constraints.getSortingColumn();
 		if (!UserController.SORTABLE_DTO_TO_ENTITY_COLUMNS.keySet().contains(sortingColumn)) {
-			throw new InvalidUserRequestConstraintsException(
-					"Columns " + sortingColumn + " is not allowed for sorting!");
+			throw new InvalidRequestException("Columns " + sortingColumn + " is not allowed for sorting!");
 		}
 	}
 

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.simple_shop.user_service.user.exceptions.UserValidationException;
 import com.simple_shop.user_service.utils.UserServiceUtils;
 
 public final class User {
@@ -33,12 +32,7 @@ public final class User {
 
 	private final Long version;
 
-	/**
-	 * @param  builder
-	 *
-	 * @throws UserValidationException When the builder doesn't validate properly.
-	 */
-	private User(final UserBuilder builder) throws UserValidationException {
+	private User(final UserBuilder builder) throws IllegalStateException {
 		super();
 
 		builder.validate();
@@ -243,58 +237,50 @@ public final class User {
 			return this;
 		}
 
-		/**
-		 * @throws UserValidationException When a field is not properly set.
-		 */
-		public void validate() throws UserValidationException {
+		public void validate() throws IllegalStateException {
 			if (this.id != null && this.id < 0) {
-				throw new UserValidationException("Invalid ID!");
+				throw new IllegalStateException("Invalid ID!");
 			}
 
 			if (this.username == null || this.username.isBlank() || this.username.length() > 30) {
-				throw new UserValidationException("Invalid username!");
+				throw new IllegalStateException("Invalid username!");
 			}
 
 			if (this.firstName == null || this.firstName.isBlank() || this.firstName.length() > 30) {
-				throw new UserValidationException("Invalid first name!");
+				throw new IllegalStateException("Invalid first name!");
 			}
 
 			final String middleNameString = UserServiceUtils.convertMiddleNames(this.middleNames);
 			if (middleNameString != null && middleNameString.length() > 100) {
-				throw new UserValidationException("Invalid middle names!");
+				throw new IllegalStateException("Invalid middle names!");
 			}
 
 			if (this.lastName == null || this.lastName.isBlank() || this.lastName.length() > 30) {
-				throw new UserValidationException("Invalid last name!");
+				throw new IllegalStateException("Invalid last name!");
 			}
 
 			if (this.email == null || this.email.isBlank() || this.email.length() > 254) {
-				throw new UserValidationException("Invalid email!");
+				throw new IllegalStateException("Invalid email!");
 			}
 
 			if (this.userType == null) {
-				throw new UserValidationException("Invalid user type!");
+				throw new IllegalStateException("Invalid user type!");
 			}
 
 			if (this.passwordHash != null && (this.passwordHash.isBlank() || this.passwordHash.length() > 128)) {
-				throw new UserValidationException("Invalid password hash!");
+				throw new IllegalStateException("Invalid password hash!");
 			}
 
 			if (this.lastChangedBy != null && this.lastChangedBy < 0) {
-				throw new UserValidationException("Invalid last changed by!");
+				throw new IllegalStateException("Invalid last changed by!");
 			}
 
 			if (this.version != null && this.version < 0) {
-				throw new UserValidationException("Invalid version!");
+				throw new IllegalStateException("Invalid version!");
 			}
 		}
 
-		/**
-		 * @return
-		 *
-		 * @throws UserValidationException When the builder doesn't validate properly.
-		 */
-		public User build() throws UserValidationException {
+		public User build() throws IllegalStateException {
 			return new User(this);
 		}
 

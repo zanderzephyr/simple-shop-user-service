@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.simple_shop.user_service.user.dto.UserServiceErrorResponseDto;
 import com.simple_shop.user_service.user.dto.UserServiceErrorResponseDto.UserServiceErrorResponseDtoBuilder;
-import com.simple_shop.user_service.user.exceptions.InvalidUserRequestConstraintsException;
+import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
 import com.simple_shop.user_service.user.exceptions.UserNotFoundException;
-import com.simple_shop.user_service.user.exceptions.UserValidationException;
 
 @RestControllerAdvice(assignableTypes = UserController.class)
 public final class UserControllerAdvice {
@@ -22,14 +21,14 @@ public final class UserControllerAdvice {
 		super();
 	}
 
-	@ExceptionHandler(UserValidationException.class)
-	public ResponseEntity<UserServiceErrorResponseDto> handleUserValidationException(
-			final UserValidationException exception) {
+	@ExceptionHandler(InvalidRequestException.class)
+	public ResponseEntity<UserServiceErrorResponseDto> handleInvalidRequestException(
+			final InvalidRequestException exception) {
 
 		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.BAD_REQUEST.value())//
-				.setMessage("User validation failed")//
+				.setMessage("Invalid request")//
 				.setTimestamp(Instant.now())//
 				.build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
@@ -46,32 +45,6 @@ public final class UserControllerAdvice {
 				.setTimestamp(Instant.now())//
 				.build();
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
-	}
-
-	@ExceptionHandler(InvalidUserRequestConstraintsException.class)
-	public ResponseEntity<UserServiceErrorResponseDto> handleInvalidUserRequestConstraintsException(
-			final InvalidUserRequestConstraintsException exception) {
-
-		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
-				.setDetail(exception.getMessage())//
-				.setHttpState(HttpStatus.BAD_REQUEST.value())//
-				.setMessage("Page setup is invalid")//
-				.setTimestamp(Instant.now())//
-				.build();
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
-	}
-
-	@ExceptionHandler(IllegalStateException.class)
-	public ResponseEntity<UserServiceErrorResponseDto> handleIllegalStateException(
-			final IllegalStateException exception) {
-
-		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
-				.setDetail(exception.getMessage())//
-				.setHttpState(HttpStatus.INTERNAL_SERVER_ERROR.value())//
-				.setMessage("Internal server error")//
-				.setTimestamp(Instant.now())//
-				.build();
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
 	}
 
 	@ExceptionHandler(ObjectOptimisticLockingFailureException.class)

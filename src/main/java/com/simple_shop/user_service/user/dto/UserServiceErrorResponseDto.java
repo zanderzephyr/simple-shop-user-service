@@ -105,7 +105,7 @@ public final class UserServiceErrorResponseDto {
 			}
 		}
 
-		public UserServiceErrorResponseDto build() {
+		public UserServiceErrorResponseDto build() throws IllegalStateException {
 			return new UserServiceErrorResponseDto(this);
 		}
 	}

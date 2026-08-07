@@ -4,8 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
 import com.simple_shop.user_service.user.exceptions.UserNotFoundException;
-import com.simple_shop.user_service.user.exceptions.UserValidationException;
+import com.simple_shop.user_service.user.model.LoginRequest;
+import com.simple_shop.user_service.user.model.LoginResponse;
+import com.simple_shop.user_service.user.model.LoginResponse.LoginResponseBuilder;
 import com.simple_shop.user_service.user.model.User;
 import com.simple_shop.user_service.user.model.UserAction;
 import com.simple_shop.user_service.user.persistence.UserTransactionHandler;
@@ -40,15 +43,15 @@ public final class UserService {
 
 	private static void validateUserToCreate(final User userToCreate) {
 		if (userToCreate.getId() != null) {
-			throw new UserValidationException("A user to create must not have an ID!");
+			throw new InvalidRequestException("A user to create must not have an ID!");
 		}
 
 		if (userToCreate.getPasswordHash() == null) {
-			throw new UserValidationException("A user to create must have a password!");
+			throw new InvalidRequestException("A user to create must have a password!");
 		}
 
 		if (userToCreate.getVersion() != null) {
-			throw new UserValidationException("A user to create must not have a version!");
+			throw new InvalidRequestException("A user to create must not have a version!");
 		}
 	}
 
@@ -81,5 +84,19 @@ public final class UserService {
 
 	private static String createUserNotFoundMessage(final long userId) {
 		return "Didn't find user with ID " + userId + "!";
+	}
+
+	public LoginResponse verifyLoginCredentials(final LoginRequest loginRequest) {
+		final LoginResponseBuilder loginResponseBuilder = new LoginResponseBuilder();
+
+		final User user = this.userTransactionHandler.findByUsername(loginRequest.getUsername());
+		if (user != null && user.getPasswordHash().equals(loginRequest.getPasswordHash())) {
+			loginResponseBuilder.setSuccess(true);
+			loginResponseBuilder.setUserId(user.getId());
+		} else {
+			loginResponseBuilder.setSuccess(false);
+		}
+
+		return loginResponseBuilder.build();
 	}
 }
