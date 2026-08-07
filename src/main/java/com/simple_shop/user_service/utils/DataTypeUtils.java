@@ -8,7 +8,8 @@ public final class DataTypeUtils {
 		throw new UnsupportedOperationException();
 	}
 
-	public static <E extends Enum<E>> E parseEnum(final String name, final Class<E> enumClass) {
+	public static <E extends Enum<E>> E parseEnum(final String name, final Class<E> enumClass)
+			throws NullPointerException {
 		Objects.requireNonNull(enumClass);
 
 		if (name != null) {

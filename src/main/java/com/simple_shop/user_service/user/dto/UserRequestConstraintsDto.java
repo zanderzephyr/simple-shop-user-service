@@ -1,40 +1,38 @@
 package com.simple_shop.user_service.user.dto;
 
-import com.simple_shop.user_service.user.dto.UserDto.UserDtoMember;
-
 /*
  * Must never contain sensitive information, as the properties of this object
  * are passed via URL arguments.
  */
 public final class UserRequestConstraintsDto {
-	private int pageIndex = 0;
+	private Integer pageIndex;
 
-	private int pageSize = 20;
+	private Integer pageSize;
 
 	/**
 	 * This is the name of a member of the UserDto class.
 	 */
-	private String sortingColumn = UserDtoMember.USERNAME.getDomainName();
+	private String sortingColumn;
 
-	private SortingDirection sortingDirection = SortingDirection.ASCENDING;
+	private String sortingDirection;
 
 	public UserRequestConstraintsDto() {
 		super();
 	}
 
-	public int getPageIndex() {
+	public Integer getPageIndex() {
 		return this.pageIndex;
 	}
 
-	public void setPageIndex(final int pageIndex) {
+	public void setPageIndex(final Integer pageIndex) {
 		this.pageIndex = pageIndex;
 	}
 
-	public int getPageSize() {
+	public Integer getPageSize() {
 		return this.pageSize;
 	}
 
-	public void setPageSize(final int pageSize) {
+	public void setPageSize(final Integer pageSize) {
 		this.pageSize = pageSize;
 	}
 
@@ -46,17 +44,11 @@ public final class UserRequestConstraintsDto {
 		this.sortingColumn = sortingColumn;
 	}
 
-	public SortingDirection getSortingDirection() {
+	public String getSortingDirection() {
 		return this.sortingDirection;
 	}
 
-	public void setSortingDirection(final SortingDirection sortingDirection) {
+	public void setSortingDirection(final String sortingDirection) {
 		this.sortingDirection = sortingDirection;
-	}
-
-	public static enum SortingDirection {
-		ASCENDING,
-
-		DESCENDING,
 	}
 }
