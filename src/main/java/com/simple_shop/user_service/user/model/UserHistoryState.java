@@ -3,6 +3,7 @@ package com.simple_shop.user_service.user.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.simple_shop.user_service.utils.UserServiceUtils;
 
@@ -33,6 +34,8 @@ public final class UserHistoryState {
 
 	private UserHistoryState(final UserHistoryStateBuilder builder) throws IllegalStateException {
 		super();
+
+		Objects.requireNonNull(builder);
 
 		builder.validate();
 

@@ -1,5 +1,7 @@
 package com.simple_shop.user_service.user.model;
 
+import java.util.Objects;
+
 public final class UserRequestConstraints {
 	private final int pageIndex;
 
@@ -11,6 +13,8 @@ public final class UserRequestConstraints {
 
 	private UserRequestConstraints(final UserRequestConstraintsBuilder builder) throws IllegalStateException {
 		super();
+
+		Objects.requireNonNull(builder);
 
 		builder.validate();
 

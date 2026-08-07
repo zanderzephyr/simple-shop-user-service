@@ -1,5 +1,7 @@
 package com.simple_shop.user_service.user.model;
 
+import java.util.Objects;
+
 public final class LoginResponse {
 	private final Long userId;
 
@@ -7,6 +9,8 @@ public final class LoginResponse {
 
 	private LoginResponse(final LoginResponseBuilder builder) throws IllegalStateException {
 		super();
+
+		Objects.requireNonNull(builder);
 
 		builder.validate();
 
