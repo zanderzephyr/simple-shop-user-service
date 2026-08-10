@@ -33,14 +33,14 @@ public final class BackendController {
 	 * Never GET, as that shouldn't have a body but URL parameters instead. URL
 	 * parameters shouldn't be used for sensitive info.
 	 */
-	@PostMapping("/verifyLoginCredentials")
-	public ResponseEntity<LoginResponseDto> verifyLoginCredentials(@RequestBody final LoginRequestDto loginRequestDto) {
+	@PostMapping("/verify-credentials")
+	public ResponseEntity<LoginResponseDto> verifyCredentials(@RequestBody final LoginRequestDto loginRequestDto) {
 		if (loginRequestDto == null) {
 			throw new InvalidRequestException("No login request!");
 		}
 
 		final LoginRequest loginRequest = DtoMapper.toDomain(loginRequestDto, this.passwordEncoder);
-		final LoginResponse loginResponse = this.userService.verifyLoginCredentials(loginRequest);
+		final LoginResponse loginResponse = this.userService.verifyCredentials(loginRequest);
 		final LoginResponseDto loginResponseDto = DtoMapper.toDto(loginResponse);
 
 		return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
