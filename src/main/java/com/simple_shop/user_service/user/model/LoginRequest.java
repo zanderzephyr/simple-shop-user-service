@@ -3,7 +3,7 @@ package com.simple_shop.user_service.user.model;
 import java.util.Objects;
 
 public final class LoginRequest {
-	private final String username;
+	private final long userId;
 
 	private final String passwordHash;
 
@@ -14,12 +14,12 @@ public final class LoginRequest {
 
 		builder.validate();
 
-		this.username = builder.getUsername();
+		this.userId = builder.getUserId();
 		this.passwordHash = builder.getPasswordHash();
 	}
 
-	public String getUsername() {
-		return this.username;
+	public long getUserId() {
+		return this.userId;
 	}
 
 	public String getPasswordHash() {
@@ -27,7 +27,7 @@ public final class LoginRequest {
 	}
 
 	public static final class LoginRequestBuilder {
-		private String username;
+		private Long userId;
 
 		private String passwordHash;
 
@@ -35,12 +35,12 @@ public final class LoginRequest {
 			super();
 		}
 
-		public String getUsername() {
-			return this.username;
+		public Long getUserId() {
+			return this.userId;
 		}
 
-		public LoginRequestBuilder setUsername(final String username) {
-			this.username = username;
+		public LoginRequestBuilder setUserId(final Long userId) {
+			this.userId = userId;
 
 			return this;
 		}
@@ -57,8 +57,8 @@ public final class LoginRequest {
 
 		public void validate() throws IllegalStateException {
 			// No need to validate the db length requirements here
-			if (this.username == null || this.username.isBlank()) {
-				throw new IllegalStateException("Invalid username!");
+			if (this.userId == null || this.userId < 0) {
+				throw new IllegalStateException("Invalid user ID!");
 			}
 
 			// No need to validate the db length requirements here

@@ -1,10 +1,12 @@
 package com.simple_shop.user_service.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.simple_shop.user_service.user.dto.formatter.JsonLongFormatter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginRequestDto {
-	private String username;
+	@JsonLongFormatter
+	private Long userId;
 
 	private String passwordHash;
 
@@ -12,12 +14,12 @@ public class LoginRequestDto {
 		super();
 	}
 
-	public String getUsername() {
-		return this.username;
+	public Long getUserId() {
+		return this.userId;
 	}
 
-	public LoginRequestDto setUsername(final String username) {
-		this.username = username;
+	public LoginRequestDto setUserId(final Long userId) {
+		this.userId = userId;
 
 		return this;
 	}

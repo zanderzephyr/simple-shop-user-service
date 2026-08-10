@@ -27,9 +27,12 @@ public final class UserService {
 		return this.userTransactionHandler.findAll(pageable);
 	}
 
+	public User getUserByUsername(final String username) {
+		return this.findUserByUsername(username);
+	}
+
 	public User getUserById(final long id) {
-		final User user = this.findUserById(id);
-		return user;
+		return this.findUserById(id);
 	}
 
 	public User createUser(final User userToCreate, final Long executingUserId) {
@@ -82,6 +85,14 @@ public final class UserService {
 		return user;
 	}
 
+	private User findUserByUsername(final String username) {
+		final User user = this.userTransactionHandler.findByUsername(username);
+		if (user == null) {
+			throw new UserNotFoundException("Didn't find user with username: " + username);
+		}
+		return user;
+	}
+
 	private static String createUserNotFoundMessage(final long userId) {
 		return "Didn't find user with ID " + userId + "!";
 	}
@@ -89,15 +100,9 @@ public final class UserService {
 	public LoginResponse verifyLoginCredentials(final LoginRequest loginRequest) {
 		final LoginResponseBuilder loginResponseBuilder = new LoginResponseBuilder();
 
-		final User user = this.userTransactionHandler.findByUsername(loginRequest.getUsername());
-		if (user != null) {
-			loginResponseBuilder.setUserId(user.getId());
-			if (user.getPasswordHash().equals(loginRequest.getPasswordHash())) {
-				loginResponseBuilder.setSuccess(true);
-			}
-		} else {
-			loginResponseBuilder.setSuccess(false);
-		}
+		final User user = this.userTransactionHandler.findById(loginRequest.getUserId());
+		final boolean success = user != null && user.getPasswordHash().equals(loginRequest.getPasswordHash());
+		loginResponseBuilder.setSuccess(success);
 
 		return loginResponseBuilder.build();
 	}
