@@ -102,7 +102,7 @@ final class DtoMapper {
 		try {
 			return new LoginRequestBuilder()//
 					.setPasswordHash(DtoMapper.hashClientPassword(loginRequestDto.getPasswordHash(), passwordEncoder))//
-					.setUserId(loginRequestDto.getUserId())//
+					.setUsername(loginRequestDto.getUsername())//
 					.build();
 		} catch (final Exception e) {
 			throw new InvalidRequestException(e);
@@ -113,6 +113,7 @@ final class DtoMapper {
 		final LoginResponseDto loginResponseDto = new LoginResponseDto();
 
 		loginResponseDto.setSuccess(loginResponse.getSuccess());
+		loginResponseDto.setUserId(loginResponse.getUserId());
 
 		return loginResponseDto;
 	}

@@ -3,8 +3,6 @@ package com.simple_shop.user_service.user.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.simple_shop.user_service.user.dto.LoginRequestDto;
 import com.simple_shop.user_service.user.dto.LoginResponseDto;
-import com.simple_shop.user_service.user.dto.UserIdResponseDto;
 import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
 import com.simple_shop.user_service.user.model.LoginRequest;
 import com.simple_shop.user_service.user.model.LoginResponse;
@@ -30,17 +27,6 @@ public final class BackendController {
 
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
-	}
-
-	@GetMapping("/getUserId/{username}")
-	public ResponseEntity<UserIdResponseDto> getUserId(@PathVariable final String username) {
-		if (username == null || username.isBlank()) {
-			throw new InvalidRequestException("No username!");
-		}
-
-		final UserIdResponseDto userIdResponseDto = new UserIdResponseDto();
-		userIdResponseDto.setUserId(this.userService.getUserByUsername(username).getId());
-		return ResponseEntity.status(HttpStatus.OK).body(userIdResponseDto);
 	}
 
 	/*
