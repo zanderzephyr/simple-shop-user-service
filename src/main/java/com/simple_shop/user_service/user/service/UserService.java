@@ -97,7 +97,7 @@ public final class UserService {
 		return "Didn't find user with ID " + userId + "!";
 	}
 
-	public LoginResponse verifyLoginCredentials(final LoginRequest loginRequest) {
+	public LoginResponse verifyCredentials(final LoginRequest loginRequest) {
 		final LoginResponseBuilder loginResponseBuilder = new LoginResponseBuilder();
 
 		final User user = this.userTransactionHandler.findById(loginRequest.getUserId());
