@@ -8,7 +8,7 @@ public class LoginResponseDto {
 	@JsonLongFormatter
 	private Long userId;
 
-	private Boolean success;
+	private Boolean credentialsOk;
 
 	public LoginResponseDto() {
 		super();
@@ -24,12 +24,12 @@ public class LoginResponseDto {
 		return this;
 	}
 
-	public Boolean getSuccess() {
-		return this.success;
+	public Boolean getCredentialsOk() {
+		return this.credentialsOk;
 	}
 
-	public LoginResponseDto setSuccess(final Boolean success) {
-		this.success = success;
+	public LoginResponseDto setCredentialsOk(final Boolean credentialsOk) {
+		this.credentialsOk = credentialsOk;
 
 		return this;
 	}

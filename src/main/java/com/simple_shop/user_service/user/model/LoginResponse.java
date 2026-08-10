@@ -5,7 +5,7 @@ import java.util.Objects;
 public final class LoginResponse {
 	private final Long userId;
 
-	private final boolean success;
+	private final boolean credentialsOk;
 
 	private LoginResponse(final LoginResponseBuilder builder) throws IllegalStateException {
 		super();
@@ -15,21 +15,21 @@ public final class LoginResponse {
 		builder.validate();
 
 		this.userId = builder.getUserId();
-		this.success = builder.getSuccess();
+		this.credentialsOk = builder.getCredentialsOk();
 	}
 
 	public Long getUserId() {
 		return this.userId;
 	}
 
-	public boolean getSuccess() {
-		return this.success;
+	public boolean getCredentialsOk() {
+		return this.credentialsOk;
 	}
 
 	public static final class LoginResponseBuilder {
 		private Long userId;
 
-		private Boolean success;
+		private Boolean credentialsOk;
 
 		public LoginResponseBuilder() {
 			super();
@@ -45,12 +45,12 @@ public final class LoginResponse {
 			return this;
 		}
 
-		public Boolean getSuccess() {
-			return this.success;
+		public Boolean getCredentialsOk() {
+			return this.credentialsOk;
 		}
 
-		public LoginResponseBuilder setSuccess(final Boolean success) {
-			this.success = success;
+		public LoginResponseBuilder setCredentialsOk(final Boolean credentialsOk) {
+			this.credentialsOk = credentialsOk;
 
 			return this;
 		}
@@ -60,8 +60,8 @@ public final class LoginResponse {
 				throw new IllegalStateException("Invalid user ID!");
 			}
 
-			if (this.success == null) {
-				throw new IllegalStateException("Invalid success!");
+			if (this.credentialsOk == null) {
+				throw new IllegalStateException("Invalid credentialsOk!");
 			}
 		}
 

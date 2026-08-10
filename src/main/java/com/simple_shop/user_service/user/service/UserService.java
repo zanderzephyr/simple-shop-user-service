@@ -93,10 +93,10 @@ public final class UserService {
 		if (user != null) {
 			loginResponseBuilder.setUserId(user.getId());
 			if (user.getPasswordHash().equals(loginRequest.getPasswordHash())) {
-				loginResponseBuilder.setSuccess(true);
+				loginResponseBuilder.setCredentialsOk(true);
 			}
 		} else {
-			loginResponseBuilder.setSuccess(false);
+			loginResponseBuilder.setCredentialsOk(false);
 		}
 
 		return loginResponseBuilder.build();

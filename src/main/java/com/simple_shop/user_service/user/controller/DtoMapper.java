@@ -112,7 +112,7 @@ final class DtoMapper {
 	public static LoginResponseDto toDto(final LoginResponse loginResponse) {
 		final LoginResponseDto loginResponseDto = new LoginResponseDto();
 
-		loginResponseDto.setSuccess(loginResponse.getSuccess());
+		loginResponseDto.setCredentialsOk(loginResponse.getCredentialsOk());
 		loginResponseDto.setUserId(loginResponse.getUserId());
 
 		return loginResponseDto;
