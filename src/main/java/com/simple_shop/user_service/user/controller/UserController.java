@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.simple_shop.user_service.user.dto.RequestConstraintsDto;
 import com.simple_shop.user_service.user.dto.UserDto;
-import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
+import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
 import com.simple_shop.user_service.user.model.RequestConstraints;
 import com.simple_shop.user_service.user.model.SortingDirection;
 import com.simple_shop.user_service.user.model.User;
@@ -54,7 +54,7 @@ public final class UserController {
 		 */
 
 		if (userDto == null) {
-			throw new InvalidRequestException("No user!");
+			throw new InvalidMessageException("No user!");
 		}
 
 		final User userToCreate = DtoMapper.toDomain(userDto, this.passwordEncoder);
@@ -73,15 +73,15 @@ public final class UserController {
 		 */
 
 		if (userDto == null) {
-			throw new InvalidRequestException("No user!");
+			throw new InvalidMessageException("No user!");
 		}
 
 		final User userToModify = DtoMapper.toDomain(userDto, this.passwordEncoder);
 		if (!Long.valueOf(userId).equals(userToModify.getId())) {
-			throw new InvalidRequestException("Path ID and payload ID mismatch!");
+			throw new InvalidMessageException("Path ID and payload ID mismatch!");
 		}
 		if (userDto.getVersion() == null) {
-			throw new InvalidRequestException("Version must not be null!");
+			throw new InvalidMessageException("Version must not be null!");
 		}
 
 		// TODO Replace userId with actual session user ID
@@ -121,7 +121,7 @@ public final class UserController {
 		 */
 
 		if (requestConstraintsDto == null) {
-			throw new InvalidRequestException("No user request constraints!");
+			throw new InvalidMessageException("No user request constraints!");
 		}
 
 		final RequestConstraints requestConstraints = DtoMapper.toDomain(requestConstraintsDto);
@@ -149,7 +149,7 @@ public final class UserController {
 		} else if (SortingDirection.DESCENDING.equals(sortingDirection)) {
 			direction = Direction.DESC;
 		} else {
-			throw new InvalidRequestException("Unexpected sorting direction: " + sortingDirection);
+			throw new InvalidMessageException("Unexpected sorting direction: " + sortingDirection);
 		}
 
 		return direction;

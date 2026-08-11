@@ -10,7 +10,7 @@ import com.simple_shop.user_service.user.dto.LoginResponseDto;
 import com.simple_shop.user_service.user.dto.RequestConstraintsDto;
 import com.simple_shop.user_service.user.dto.UserDto;
 import com.simple_shop.user_service.user.dto.UserDto.UserDtoMember;
-import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
+import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
 import com.simple_shop.user_service.user.model.LoginRequest;
 import com.simple_shop.user_service.user.model.LoginRequest.LoginRequestBuilder;
 import com.simple_shop.user_service.user.model.LoginResponse;
@@ -60,7 +60,7 @@ final class DtoMapper {
 					.setVersion(userDto.getVersion())//
 					.build();
 		} catch (final Exception e) {
-			throw new InvalidRequestException(e);
+			throw new InvalidMessageException(e);
 		}
 
 	}
@@ -105,7 +105,7 @@ final class DtoMapper {
 					.setUsername(loginRequestDto.getUsername())//
 					.build();
 		} catch (final Exception e) {
-			throw new InvalidRequestException(e);
+			throw new InvalidMessageException(e);
 		}
 	}
 
@@ -131,7 +131,7 @@ final class DtoMapper {
 							: SortingDirection.ASCENDING)//
 					.build();
 		} catch (final Exception e) {
-			throw new InvalidRequestException(e);
+			throw new InvalidMessageException(e);
 		}
 	}
 

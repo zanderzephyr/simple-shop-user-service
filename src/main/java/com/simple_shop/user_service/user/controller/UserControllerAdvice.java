@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.simple_shop.user_service.user.dto.UserServiceErrorResponseDto;
 import com.simple_shop.user_service.user.dto.UserServiceErrorResponseDto.UserServiceErrorResponseDtoBuilder;
-import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
+import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
 import com.simple_shop.user_service.user.exceptions.UserNotFoundException;
 
 @RestControllerAdvice(assignableTypes = UserController.class)
@@ -21,9 +21,9 @@ public final class UserControllerAdvice {
 		super();
 	}
 
-	@ExceptionHandler(InvalidRequestException.class)
+	@ExceptionHandler(InvalidMessageException.class)
 	public ResponseEntity<UserServiceErrorResponseDto> handleInvalidRequestException(
-			final InvalidRequestException exception) {
+			final InvalidMessageException exception) {
 
 		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//

@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
+import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
 import com.simple_shop.user_service.user.exceptions.UserNotFoundException;
 import com.simple_shop.user_service.user.model.LoginRequest;
 import com.simple_shop.user_service.user.model.LoginResponse;
@@ -43,15 +43,15 @@ public final class UserService {
 
 	private static void validateUserToCreate(final User userToCreate) {
 		if (userToCreate.getId() != null) {
-			throw new InvalidRequestException("A user to create must not have an ID!");
+			throw new InvalidMessageException("A user to create must not have an ID!");
 		}
 
 		if (userToCreate.getPasswordHash() == null) {
-			throw new InvalidRequestException("A user to create must have a password!");
+			throw new InvalidMessageException("A user to create must have a password!");
 		}
 
 		if (userToCreate.getVersion() != null) {
-			throw new InvalidRequestException("A user to create must not have a version!");
+			throw new InvalidMessageException("A user to create must not have a version!");
 		}
 	}
 

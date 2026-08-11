@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.simple_shop.user_service.user.dto.LoginRequestDto;
 import com.simple_shop.user_service.user.dto.LoginResponseDto;
-import com.simple_shop.user_service.user.exceptions.InvalidRequestException;
+import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
 import com.simple_shop.user_service.user.model.LoginRequest;
 import com.simple_shop.user_service.user.model.LoginResponse;
 import com.simple_shop.user_service.user.service.UserService;
@@ -36,7 +36,7 @@ public final class BackendController {
 	@PostMapping("/verify-credentials")
 	public ResponseEntity<LoginResponseDto> verifyCredentials(@RequestBody final LoginRequestDto loginRequestDto) {
 		if (loginRequestDto == null) {
-			throw new InvalidRequestException("No login request!");
+			throw new InvalidMessageException("No login request!");
 		}
 
 		final LoginRequest loginRequest = DtoMapper.toDomain(loginRequestDto, this.passwordEncoder);
