@@ -46,7 +46,7 @@ public final class UserController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@PostMapping
+	@PostMapping("/create-user")
 	public ResponseEntity<UserDto> createUser(//
 			@RequestHeader(name = "X-User-Id", required = false) final Long executingUserId, //
 			@RequestBody final UserDto userDto) {
@@ -61,7 +61,7 @@ public final class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
 	}
 
-	@PutMapping("/{userId}")
+	@PutMapping("/modify-user/{userId}")
 	public ResponseEntity<UserDto> modifyUser(//
 			@RequestHeader(name = "X-User-Id") final long executingUserId, //
 			@PathVariable final long userId, //
@@ -88,7 +88,7 @@ public final class UserController {
 	 * No version checking here for optimistic locking. A delete operation is valid
 	 * even on stale data.
 	 */
-	@DeleteMapping("/{userId}")
+	@DeleteMapping("/delete-user/{userId}")
 	public ResponseEntity<Void> deleteUser(//
 			@RequestHeader(name = "X-User-Id") final long executingUserId, //
 			@PathVariable final long userId) {
@@ -103,7 +103,7 @@ public final class UserController {
 	}
 
 	// Using ModelAttribute to prevent GET requests without body causing issues
-	@GetMapping
+	@GetMapping("/get-users")
 	public ResponseEntity<PagedModel<UserDto>> getUsers(
 			@ModelAttribute final RequestConstraintsDto requestConstraintsDto) {
 
@@ -142,14 +142,14 @@ public final class UserController {
 		return direction;
 	}
 
-	@GetMapping("/{userId}")
+	@GetMapping("/get-user/{userId}")
 	public ResponseEntity<UserDto> getUser(@PathVariable final long userId) {
 		final User user = this.userService.getUserById(userId);
 		final UserDto userDto = DtoMapper.toDto(user);
 		return ResponseEntity.status(HttpStatus.OK).body(userDto);
 	}
 
-	@GetMapping("/user-type/{userId}")
+	@GetMapping("/get-user-type/{userId}")
 	public ResponseEntity<String> getUserType(@PathVariable final long userId) {
 		final UserType userType = this.userService.determineUserType(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(userType.name());
