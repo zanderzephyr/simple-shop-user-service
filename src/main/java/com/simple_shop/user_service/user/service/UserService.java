@@ -11,16 +11,23 @@ import com.simple_shop.user_service.user.model.LoginResponse;
 import com.simple_shop.user_service.user.model.LoginResponse.LoginResponseBuilder;
 import com.simple_shop.user_service.user.model.User;
 import com.simple_shop.user_service.user.model.UserAction;
+import com.simple_shop.user_service.user.model.UserType;
 import com.simple_shop.user_service.user.persistence.UserTransactionHandler;
+import com.simple_shop.user_service.user.service.redis.RedisUserData;
+import com.simple_shop.user_service.user.service.redis.RedisUserData.RedisUserDataBuilder;
+import com.simple_shop.user_service.user.service.redis.RedisUserService;
 
 @Service
 public final class UserService {
 	private final UserTransactionHandler userTransactionHandler;
 
-	public UserService(final UserTransactionHandler userTransactionHandler) {
+	private final RedisUserService redisUserService;
+
+	public UserService(final UserTransactionHandler userTransactionHandler, final RedisUserService redisUserService) {
 		super();
 
 		this.userTransactionHandler = userTransactionHandler;
+		this.redisUserService = redisUserService;
 	}
 
 	public Page<User> getUsers(final Pageable pageable) {
@@ -64,6 +71,8 @@ public final class UserService {
 
 		final User modifiedUser = this.userTransactionHandler.saveUser(finalizedUser, UserAction.MODIFY);
 
+		this.updateCache(modifiedUser, Boolean.FALSE);
+
 		return modifiedUser;
 	}
 
@@ -72,6 +81,8 @@ public final class UserService {
 		if (user == null) {
 			throw new UserNotFoundException(UserService.createUserNotFoundMessage(userId));
 		}
+
+		this.emptyCache(userId);
 	}
 
 	private User findUserById(final long userId) {
@@ -94,11 +105,44 @@ public final class UserService {
 			loginResponseBuilder.setUserId(user.getId());
 			if (user.getPasswordHash().equals(loginRequest.getPasswordHash())) {
 				loginResponseBuilder.setCredentialsOk(true);
+
+				this.updateCache(user, Boolean.TRUE);
+			} else {
+				loginResponseBuilder.setCredentialsOk(false);
 			}
 		} else {
 			loginResponseBuilder.setCredentialsOk(false);
 		}
 
 		return loginResponseBuilder.build();
+	}
+
+	public UserType determineUserType(final long userId) {
+		final UserType userType;
+
+		final RedisUserData cachedData = this.redisUserService.getUserEntry(userId);
+		if (cachedData != null) {
+			userType = cachedData.getUserType();
+		} else {
+			final User user = this.getUserById(userId);
+
+			this.updateCache(user, Boolean.TRUE);
+
+			userType = user.getUserType();
+		}
+
+		return userType;
+	}
+
+	public void emptyCache(final long userId) {
+		this.redisUserService.deleteUserEntry(userId);
+	}
+
+	private void updateCache(final User user, final boolean addIfDoesntExist) {
+		final RedisUserData existingEntry = this.redisUserService.getUserEntry(user.getId());
+		if (existingEntry != null || addIfDoesntExist) {
+			final RedisUserData newEntry = new RedisUserDataBuilder().setUserType(user.getUserType()).build();
+			this.redisUserService.createUserEntry(user.getId(), newEntry);
+		}
 	}
 }

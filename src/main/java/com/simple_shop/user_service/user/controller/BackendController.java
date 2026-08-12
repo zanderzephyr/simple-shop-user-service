@@ -3,6 +3,8 @@ package com.simple_shop.user_service.user.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,4 +47,12 @@ public final class BackendController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
 	}
+
+	@DeleteMapping("/empty-cache/{userId}")
+	public ResponseEntity<Void> emptyCache(@PathVariable final long userId) {
+		this.userService.emptyCache(userId);
+
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
 }

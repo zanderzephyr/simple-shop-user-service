@@ -1,0 +1,6 @@
+services:
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6082:6082'
+    pull_policy: always

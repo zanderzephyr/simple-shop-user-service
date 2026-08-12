@@ -29,6 +29,7 @@ import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
 import com.simple_shop.user_service.user.model.RequestConstraints;
 import com.simple_shop.user_service.user.model.SortingDirection;
 import com.simple_shop.user_service.user.model.User;
+import com.simple_shop.user_service.user.model.UserType;
 import com.simple_shop.user_service.user.service.UserService;
 
 @RestController
@@ -146,5 +147,11 @@ public final class UserController {
 		final User user = this.userService.getUserById(userId);
 		final UserDto userDto = DtoMapper.toDto(user);
 		return ResponseEntity.status(HttpStatus.OK).body(userDto);
+	}
+
+	@GetMapping("/user-type/{userId}")
+	public ResponseEntity<String> getUserType(@PathVariable final long userId) {
+		final UserType userType = this.userService.determineUserType(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(userType.name());
 	}
 }
