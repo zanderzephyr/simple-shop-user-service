@@ -25,18 +25,18 @@ public class RedisUserService {
 	}
 
 	public void createUserEntry(final long userId, final RedisUserData userData) {
-		final String key = Long.toString(userId);
+		final String key = RedisUserService.resolveKey(userId);
 		final String value = userData.getUserType().name();
 		this.redisTemplate.opsForValue().set(key, value, Duration.ofMinutes(60));
 	}
 
 	public RedisUserData getUserEntry(final long userId) {
-		final String userDataString = this.redisTemplate.opsForValue().get(Long.toString(userId));
+		final String userDataString = this.redisTemplate.opsForValue().get(RedisUserService.resolveKey(userId));
 		return this.stringToUserData(userDataString);
 	}
 
 	public void deleteUserEntry(final long userId) {
-		this.redisTemplate.delete(Long.toString(userId));
+		this.redisTemplate.delete(RedisUserService.resolveKey(userId));
 	}
 
 	private RedisUserData stringToUserData(final String userDataString) {
@@ -45,5 +45,9 @@ public class RedisUserService {
 			return new RedisUserDataBuilder().setUserType(userType).build();
 		}
 		return null;
+	}
+
+	private static String resolveKey(final long userId) {
+		return Long.toString(userId);
 	}
 }
