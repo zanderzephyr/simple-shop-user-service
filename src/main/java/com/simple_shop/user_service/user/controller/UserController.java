@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,32 +46,25 @@ public final class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDto> createUser(@RequestBody final UserDto userDto) {
-		/*
-		 * TODO If there's a valid session: Make sure, it's an admin. If it isn't or any
-		 * other problem arises, answer appropriately with negative response.
-		 *
-		 * If there is no session, we are in the registration phase for some new user.
-		 */
+	public ResponseEntity<UserDto> createUser(//
+			@RequestHeader(name = "X-User-Id", required = false) final Long executingUserId, //
+			@RequestBody final UserDto userDto) {
 
 		if (userDto == null) {
 			throw new InvalidMessageException("No user!");
 		}
 
 		final User userToCreate = DtoMapper.toDomain(userDto, this.passwordEncoder);
-
-		// TODO If there's a session, use the user ID of the session instead
-		final User createdUser = this.userService.createUser(userToCreate, null);
+		final User createdUser = this.userService.createUser(userToCreate, executingUserId);
 		final UserDto createdUserDto = DtoMapper.toDto(createdUser);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
 	}
 
 	@PutMapping("/{userId}")
-	public ResponseEntity<UserDto> modifyUser(@PathVariable final long userId, @RequestBody final UserDto userDto) {
-		/*
-		 * TODO Validate session is ok. If it isn't, answer appropriately with negative
-		 * response.
-		 */
+	public ResponseEntity<UserDto> modifyUser(//
+			@RequestHeader(name = "X-User-Id") final long executingUserId, //
+			@PathVariable final long userId, //
+			@RequestBody final UserDto userDto) {
 
 		if (userDto == null) {
 			throw new InvalidMessageException("No user!");
@@ -84,8 +78,7 @@ public final class UserController {
 			throw new InvalidMessageException("Version must not be null!");
 		}
 
-		// TODO Replace userId with actual session user ID
-		final User modifiedUser = this.userService.modifyUser(userToModify, 42l);
+		final User modifiedUser = this.userService.modifyUser(userToModify, executingUserId);
 		final UserDto modifiedUserDto = DtoMapper.toDto(modifiedUser);
 		return ResponseEntity.status(HttpStatus.OK).body(modifiedUserDto);
 	}
@@ -95,14 +88,11 @@ public final class UserController {
 	 * even on stale data.
 	 */
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<Void> deleteUser(@PathVariable final long userId) {
-		/*
-		 * TODO Validate session is ok. If it isn't, answer appropriately with negative
-		 * response.
-		 */
+	public ResponseEntity<Void> deleteUser(//
+			@RequestHeader(name = "X-User-Id") final long executingUserId, //
+			@PathVariable final long userId) {
 
-		// TODO Replace userId with actual session user ID
-		this.userService.deleteUser(userId, 42l);
+		this.userService.deleteUser(userId, executingUserId);
 
 		/*
 		 * NO_CONTENT (204) means no response body. If we return OK (200), there would
@@ -115,10 +105,6 @@ public final class UserController {
 	@GetMapping
 	public ResponseEntity<PagedModel<UserDto>> getUsers(
 			@ModelAttribute final RequestConstraintsDto requestConstraintsDto) {
-		/*
-		 * TODO Validate session is ok. If it isn't, answer appropriately with negative
-		 * response.
-		 */
 
 		if (requestConstraintsDto == null) {
 			throw new InvalidMessageException("No user request constraints!");
@@ -157,11 +143,6 @@ public final class UserController {
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserDto> getUser(@PathVariable final long userId) {
-		/*
-		 * TODO Validate session is ok. If it isn't, answer appropriately with negative
-		 * response.
-		 */
-
 		final User user = this.userService.getUserById(userId);
 		final UserDto userDto = DtoMapper.toDto(user);
 		return ResponseEntity.status(HttpStatus.OK).body(userDto);
