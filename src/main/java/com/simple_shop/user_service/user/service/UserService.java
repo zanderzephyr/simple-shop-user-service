@@ -39,6 +39,7 @@ public final class UserService {
 		return user;
 	}
 
+	// TODO Deal with user already exists case
 	public User createUser(final User userToCreate, final Long executingUserId) {
 		UserService.validateUserToCreate(userToCreate);
 
@@ -62,6 +63,7 @@ public final class UserService {
 		}
 	}
 
+	// TODO Deal with user already exists case
 	public User modifyUser(final User userToModify, final long executingUserId) {
 		// Ensure the user exists
 		final User existingUser = this.findUserById(userToModify.getId());
