@@ -22,13 +22,13 @@ public final class UserControllerAdvice {
 	}
 
 	@ExceptionHandler(InvalidMessageException.class)
-	public ResponseEntity<UserServiceErrorResponseDto> handleInvalidRequestException(
+	public ResponseEntity<UserServiceErrorResponseDto> handleInvalidMessageException(
 			final InvalidMessageException exception) {
 
 		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.BAD_REQUEST.value())//
-				.setMessage("Invalid request")//
+				.setMessage("Invalid message!")//
 				.setTimestamp(Instant.now())//
 				.build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
