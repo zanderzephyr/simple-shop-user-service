@@ -98,10 +98,11 @@ final class DtoMapper {
 		return userDto;
 	}
 
-	public static LoginRequest toDomain(final LoginRequestDto loginRequestDto, final PasswordEncoder passwordEncoder) {
+	public static LoginRequest toDomain(final LoginRequestDto loginRequestDto) {
 		try {
 			return new LoginRequestBuilder()//
-					.setPasswordHash(DtoMapper.hashClientPassword(loginRequestDto.getPasswordHash(), passwordEncoder))//
+					// For password matching, we take the frontend password hash as-is
+					.setPasswordHash(loginRequestDto.getPasswordHash())//
 					.setUsername(loginRequestDto.getUsername())//
 					.build();
 		} catch (final Exception e) {

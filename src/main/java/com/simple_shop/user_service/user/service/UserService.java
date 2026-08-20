@@ -2,6 +2,7 @@ package com.simple_shop.user_service.user.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
@@ -23,11 +24,15 @@ public final class UserService {
 
 	private final RedisUserService redisUserService;
 
-	public UserService(final UserTransactionHandler userTransactionHandler, final RedisUserService redisUserService) {
+	private final PasswordEncoder passwordEncoder;
+
+	public UserService(final UserTransactionHandler userTransactionHandler, final RedisUserService redisUserService,
+			final PasswordEncoder passwordEncoder) {
 		super();
 
 		this.userTransactionHandler = userTransactionHandler;
 		this.redisUserService = redisUserService;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public Page<User> getUsers(final Pageable pageable) {
@@ -105,7 +110,7 @@ public final class UserService {
 		final User user = this.userTransactionHandler.findByUsername(loginRequest.getUsername());
 		if (user != null) {
 			loginResponseBuilder.setUserId(user.getId());
-			if (user.getPasswordHash().equals(loginRequest.getPasswordHash())) {
+			if (this.passwordEncoder.matches(loginRequest.getPasswordHash(), user.getPasswordHash())) {
 				loginResponseBuilder.setCredentialsOk(true);
 
 				this.updateCache(user, Boolean.TRUE);

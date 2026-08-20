@@ -2,7 +2,6 @@ package com.simple_shop.user_service.user.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,13 +21,10 @@ import com.simple_shop.user_service.user.service.UserService;
 public final class BackendController {
 	private final UserService userService;
 
-	private final PasswordEncoder passwordEncoder;
-
-	public BackendController(final UserService userService, final PasswordEncoder passwordEncoder) {
+	public BackendController(final UserService userService) {
 		super();
 
 		this.userService = userService;
-		this.passwordEncoder = passwordEncoder;
 	}
 
 	/*
@@ -41,7 +37,7 @@ public final class BackendController {
 			throw new InvalidMessageException("No login request!");
 		}
 
-		final LoginRequest loginRequest = DtoMapper.toDomain(loginRequestDto, this.passwordEncoder);
+		final LoginRequest loginRequest = DtoMapper.toDomain(loginRequestDto);
 		final LoginResponse loginResponse = this.userService.verifyCredentials(loginRequest);
 		final LoginResponseDto loginResponseDto = DtoMapper.toDto(loginResponse);
 
