@@ -148,6 +148,6 @@ final class DtoMapper {
 			}
 		}
 
-		return sortableColumnRequest;
+		return sortableColumnValue;
 	}
 }
