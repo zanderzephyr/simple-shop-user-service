@@ -1,6 +1,9 @@
 services:
   redis:
-    image: 'redis:alpine'
+    image: 'dhi.io/redis:8.8.3-alpine3.24'
     ports:
       - '6082:6379'
-    pull_policy: always
+    # Disabling the protected mode with password access. This setup is just
+  	# for the dev context. For prod, the redis instances and access to them
+  	# will have to be different.
+    command: ["redis-server", "--protected-mode", "no"]
