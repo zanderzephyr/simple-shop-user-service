@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.simple_shop.user_service.utils.UserServiceUtils;
+import com.simple_shop.user_service.shared.utils.UserServiceUtils;
 
 public final class User {
 	private final Long id;

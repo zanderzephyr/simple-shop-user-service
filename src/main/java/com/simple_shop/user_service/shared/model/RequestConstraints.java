@@ -1,4 +1,4 @@
-package com.simple_shop.user_service.user.model;
+package com.simple_shop.user_service.shared.model;
 
 import java.util.Objects;
 

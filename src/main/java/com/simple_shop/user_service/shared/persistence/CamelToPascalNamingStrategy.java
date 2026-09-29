@@ -1,4 +1,4 @@
-package com.simple_shop.user_service.user.persistence;
+package com.simple_shop.user_service.shared.persistence;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;

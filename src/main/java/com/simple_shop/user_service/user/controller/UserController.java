@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.simple_shop.user_service.user.dto.RequestConstraintsDto;
+import com.simple_shop.user_service.shared.dto.RequestConstraintsDto;
+import com.simple_shop.user_service.shared.model.RequestConstraints;
+import com.simple_shop.user_service.shared.model.SortingDirection;
 import com.simple_shop.user_service.user.dto.UserDto;
 import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
-import com.simple_shop.user_service.user.model.RequestConstraints;
-import com.simple_shop.user_service.user.model.SortingDirection;
 import com.simple_shop.user_service.user.model.User;
 import com.simple_shop.user_service.user.model.UserType;
 import com.simple_shop.user_service.user.service.UserService;

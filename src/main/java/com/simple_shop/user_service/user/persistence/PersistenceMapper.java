@@ -1,10 +1,10 @@
 package com.simple_shop.user_service.user.persistence;
 
+import com.simple_shop.user_service.shared.utils.UserServiceUtils;
 import com.simple_shop.user_service.user.model.User;
 import com.simple_shop.user_service.user.model.User.UserBuilder;
 import com.simple_shop.user_service.user.model.UserHistoryState;
 import com.simple_shop.user_service.user.model.UserHistoryState.UserHistoryStateBuilder;
-import com.simple_shop.user_service.utils.UserServiceUtils;
 
 public final class PersistenceMapper {
 	private PersistenceMapper() {

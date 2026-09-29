@@ -1,4 +1,4 @@
-package com.simple_shop.user_service.user.dto.formatter;
+package com.simple_shop.user_service.shared.dto.formatter;
 
 import java.math.BigDecimal;
 
@@ -6,15 +6,15 @@ import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ValueSerializer;
 
-public class PlainBigDecimalSerializer extends ValueSerializer<BigDecimal> {
-	public PlainBigDecimalSerializer() {
+public class ScientificBigDecimalSerializer extends ValueSerializer<BigDecimal> {
+	public ScientificBigDecimalSerializer() {
 		super();
 	}
 
 	@Override
 	public void serialize(final BigDecimal value, final JsonGenerator gen, final SerializationContext context) {
 		if (value != null) {
-			gen.writeString(value.toPlainString());
+			gen.writeString(value.toString());
 		} else {
 			gen.writeNull();
 		}

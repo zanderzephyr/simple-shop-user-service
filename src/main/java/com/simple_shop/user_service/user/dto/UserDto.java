@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.simple_shop.user_service.user.dto.formatter.JsonLocalDateTimeFormatter;
-import com.simple_shop.user_service.user.dto.formatter.JsonLongFormatter;
+import com.simple_shop.user_service.shared.dto.formatter.JsonLocalDateTimeFormatter;
+import com.simple_shop.user_service.shared.dto.formatter.JsonLongFormatter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {

@@ -5,23 +5,23 @@ import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.simple_shop.user_service.shared.dto.RequestConstraintsDto;
+import com.simple_shop.user_service.shared.model.RequestConstraints;
+import com.simple_shop.user_service.shared.model.SortingDirection;
+import com.simple_shop.user_service.shared.model.RequestConstraints.RequestConstraintsBuilder;
+import com.simple_shop.user_service.shared.utils.DataTypeUtils;
 import com.simple_shop.user_service.user.dto.LoginRequestDto;
 import com.simple_shop.user_service.user.dto.LoginResponseDto;
-import com.simple_shop.user_service.user.dto.RequestConstraintsDto;
 import com.simple_shop.user_service.user.dto.UserDto;
 import com.simple_shop.user_service.user.dto.UserDto.UserDtoMember;
 import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
 import com.simple_shop.user_service.user.model.LoginRequest;
 import com.simple_shop.user_service.user.model.LoginRequest.LoginRequestBuilder;
 import com.simple_shop.user_service.user.model.LoginResponse;
-import com.simple_shop.user_service.user.model.RequestConstraints;
-import com.simple_shop.user_service.user.model.RequestConstraints.RequestConstraintsBuilder;
-import com.simple_shop.user_service.user.model.SortingDirection;
 import com.simple_shop.user_service.user.model.User;
 import com.simple_shop.user_service.user.model.User.UserBuilder;
 import com.simple_shop.user_service.user.model.UserType;
 import com.simple_shop.user_service.user.persistence.UserEntity.UserEntityMember;
-import com.simple_shop.user_service.utils.DataTypeUtils;
 
 final class DtoMapper {
 	private static final Map<String, String> SORTABLE_DTO_TO_ENTITY_COLUMNS = DtoMapper.collectSortableColumns();

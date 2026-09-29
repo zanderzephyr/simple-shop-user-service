@@ -1,7 +1,7 @@
 package com.simple_shop.user_service.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.simple_shop.user_service.user.dto.formatter.JsonLongFormatter;
+import com.simple_shop.user_service.shared.dto.formatter.JsonLongFormatter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginResponseDto {

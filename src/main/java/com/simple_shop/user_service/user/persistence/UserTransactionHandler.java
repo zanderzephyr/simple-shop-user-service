@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.simple_shop.user_service.shared.utils.UserServiceUtils;
 import com.simple_shop.user_service.user.model.User;
 import com.simple_shop.user_service.user.model.User.UserBuilder;
 import com.simple_shop.user_service.user.model.UserAction;
@@ -12,7 +13,6 @@ import com.simple_shop.user_service.user.model.UserHistoryState;
 import com.simple_shop.user_service.user.model.UserHistoryState.UserHistoryStateBuilder;
 import com.simple_shop.user_service.user.repository.UserHistoryStateRepository;
 import com.simple_shop.user_service.user.repository.UserRepository;
-import com.simple_shop.user_service.utils.UserServiceUtils;
 
 @Component
 public class UserTransactionHandler {

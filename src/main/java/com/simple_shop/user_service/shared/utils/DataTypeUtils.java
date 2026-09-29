@@ -1,4 +1,4 @@
-package com.simple_shop.user_service.utils;
+package com.simple_shop.user_service.shared.utils;
 
 import java.util.Objects;
 

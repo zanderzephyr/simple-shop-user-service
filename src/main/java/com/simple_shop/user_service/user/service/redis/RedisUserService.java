@@ -5,9 +5,9 @@ import java.time.Duration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import com.simple_shop.user_service.shared.utils.DataTypeUtils;
 import com.simple_shop.user_service.user.model.UserType;
 import com.simple_shop.user_service.user.service.redis.RedisUserData.RedisUserDataBuilder;
-import com.simple_shop.user_service.utils.DataTypeUtils;
 
 /*
  * If the redis service is not available somehow, there are going to be
