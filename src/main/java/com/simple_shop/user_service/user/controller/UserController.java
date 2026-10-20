@@ -117,10 +117,6 @@ public final class UserController {
 	public ResponseEntity<PagedModel<UserDto>> getUsers(
 			@ModelAttribute final RequestConstraintsDto requestConstraintsDto) {
 
-		if (requestConstraintsDto == null) {
-			throw new InvalidMessageException("No user request constraints!");
-		}
-
 		final RequestConstraints requestConstraints = DtoMapper.toDomain(requestConstraintsDto);
 
 		final Pageable pageable = this.createPageable(requestConstraints);
