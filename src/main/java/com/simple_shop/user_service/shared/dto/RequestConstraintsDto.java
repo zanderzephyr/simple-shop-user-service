@@ -25,31 +25,39 @@ public final class RequestConstraintsDto {
 		return this.pageIndex;
 	}
 
-	public void setPageIndex(final Integer pageIndex) {
+	public RequestConstraintsDto setPageIndex(final Integer pageIndex) {
 		this.pageIndex = pageIndex;
+
+		return this;
 	}
 
 	public Integer getPageSize() {
 		return this.pageSize;
 	}
 
-	public void setPageSize(final Integer pageSize) {
+	public RequestConstraintsDto setPageSize(final Integer pageSize) {
 		this.pageSize = pageSize;
+
+		return this;
 	}
 
 	public String getSortingColumn() {
 		return this.sortingColumn;
 	}
 
-	public void setSortingColumn(final String sortingColumn) {
+	public RequestConstraintsDto setSortingColumn(final String sortingColumn) {
 		this.sortingColumn = sortingColumn;
+
+		return this;
 	}
 
 	public String getSortingDirection() {
 		return this.sortingDirection;
 	}
 
-	public void setSortingDirection(final String sortingDirection) {
+	public RequestConstraintsDto setSortingDirection(final String sortingDirection) {
 		this.sortingDirection = sortingDirection;
+
+		return this;
 	}
 }
