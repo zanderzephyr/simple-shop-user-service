@@ -7,8 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.simple_shop.user_service.user.dto.UserServiceErrorResponseDto;
-import com.simple_shop.user_service.user.dto.UserServiceErrorResponseDto.UserServiceErrorResponseDtoBuilder;
+import com.simple_shop.user_service.shared.dto.ServiceErrorResponseDto;
 import com.simple_shop.user_service.user.exceptions.UserNotFoundException;
 
 @RestControllerAdvice(assignableTypes = UserController.class)
@@ -19,15 +18,13 @@ public final class UserControllerAdvice {
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<UserServiceErrorResponseDto> handleUserNotFoundException(
-			final UserNotFoundException exception) {
+	public ResponseEntity<ServiceErrorResponseDto> handleUserNotFoundException(final UserNotFoundException exception) {
 
-		final UserServiceErrorResponseDto responseDto = new UserServiceErrorResponseDtoBuilder()//
+		final ServiceErrorResponseDto responseDto = new ServiceErrorResponseDto()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.NOT_FOUND.value())//
 				.setMessage("User not found")//
-				.setTimestamp(Instant.now())//
-				.build();
+				.setTimestamp(Instant.now());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDto);
 	}
 }
