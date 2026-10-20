@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.simple_shop.user_service.shared.dto.ServiceErrorResponseDto;
-import com.simple_shop.user_service.shared.dto.ServiceErrorResponseDto.ServiceErrorResponseDtoBuilder;
 import com.simple_shop.user_service.user.exceptions.InvalidMessageException;
 
 @RestControllerAdvice // Covers all RestControllers in the application context
@@ -24,12 +23,11 @@ public final class GlobalControllerAdvice {
 	public ResponseEntity<ServiceErrorResponseDto> handleInvalidMessageException(
 			final InvalidMessageException exception) {
 
-		final ServiceErrorResponseDto responseDto = new ServiceErrorResponseDtoBuilder()//
+		final ServiceErrorResponseDto responseDto = new ServiceErrorResponseDto()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.BAD_REQUEST.value())//
 				.setMessage("Invalid message!")//
-				.setTimestamp(Instant.now())//
-				.build();
+				.setTimestamp(Instant.now());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
 	}
 
@@ -37,12 +35,11 @@ public final class GlobalControllerAdvice {
 	public ResponseEntity<ServiceErrorResponseDto> handleObjectOptimisticLockingFailureException(
 			final ObjectOptimisticLockingFailureException exception) {
 
-		final ServiceErrorResponseDto responseDto = new ServiceErrorResponseDtoBuilder()//
+		final ServiceErrorResponseDto responseDto = new ServiceErrorResponseDto()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.CONFLICT.value())//
 				.setMessage("Trying to work with a stale version")//
-				.setTimestamp(Instant.now())//
-				.build();
+				.setTimestamp(Instant.now());
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(responseDto);
 	}
 
@@ -50,12 +47,11 @@ public final class GlobalControllerAdvice {
 	public ResponseEntity<ServiceErrorResponseDto> handleHttpMessageNotReadableException(
 			final HttpMessageNotReadableException exception) {
 
-		final ServiceErrorResponseDto responseDto = new ServiceErrorResponseDtoBuilder()//
+		final ServiceErrorResponseDto responseDto = new ServiceErrorResponseDto()//
 				.setDetail(exception.getMessage())//
 				.setHttpState(HttpStatus.BAD_REQUEST.value())//
 				.setMessage("Request contains bad content!")//
-				.setTimestamp(Instant.now())//
-				.build();
+				.setTimestamp(Instant.now());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
 	}
 }
