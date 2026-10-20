@@ -6,6 +6,9 @@ package com.simple_shop.user_service.shared.dto;
  * are passed via URL arguments.
  */
 public final class RequestConstraintsDto {
+	/**
+	 * Zero-based
+	 */
 	private Integer pageIndex;
 
 	private Integer pageSize;
