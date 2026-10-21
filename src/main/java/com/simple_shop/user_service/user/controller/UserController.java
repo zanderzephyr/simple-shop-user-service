@@ -51,10 +51,6 @@ public final class UserController {
 			@RequestHeader(name = "X-User-Id", required = false) final Long executingUserId, //
 			@RequestBody final UserDto userDto) {
 
-		if (userDto == null) {
-			throw new InvalidMessageException("No user!");
-		}
-
 		final User userToCreate = DtoMapper.toDomain(userDto, this.passwordEncoder);
 		final User createdUser = this.userService.createUser(userToCreate, executingUserId);
 		final UserDto createdUserDto = DtoMapper.toDto(createdUser);
@@ -70,10 +66,6 @@ public final class UserController {
 
 		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-		}
-
-		if (userDto == null) {
-			throw new InvalidMessageException("No user!");
 		}
 
 		final User userToModify = DtoMapper.toDomain(userDto, this.passwordEncoder);
