@@ -112,7 +112,7 @@ public final class UserController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
-	// Using ModelAttribute to prevent GET requests without body causing issues
+	// ModelAttribute: Different URL parameters are collected into this dto object.
 	@GetMapping("/get-users")
 	public ResponseEntity<PagedModel<UserDto>> getUsers(
 			@ModelAttribute final RequestConstraintsDto requestConstraintsDto) {
