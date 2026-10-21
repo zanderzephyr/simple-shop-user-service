@@ -3,6 +3,7 @@ package com.simple_shop.user_service;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+// Test commit
 @SpringBootApplication
 public final class UserServiceApplication {
 	public UserServiceApplication() {
