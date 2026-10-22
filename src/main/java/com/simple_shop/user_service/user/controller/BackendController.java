@@ -40,7 +40,7 @@ public final class BackendController {
 	}
 
 	@DeleteMapping("/empty-cache/{userId}")
-	public ResponseEntity<Void> emptyCache(@PathVariable final long userId) {
+	public ResponseEntity<Void> emptyCache(@PathVariable("userId") final long userId) {
 		this.userService.emptyCache(userId);
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

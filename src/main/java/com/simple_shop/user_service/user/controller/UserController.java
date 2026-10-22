@@ -61,7 +61,7 @@ public final class UserController {
 	public ResponseEntity<UserDto> modifyUser(//
 			@RequestHeader(name = "X-User-Id") final long executingUserId, //
 			@RequestHeader(name = "X-User-Type") final UserType executingUserType, //
-			@PathVariable final long userId, //
+			@PathVariable("userId") final long userId, //
 			@RequestBody final UserDto userDto) {
 
 		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
@@ -89,7 +89,7 @@ public final class UserController {
 	public ResponseEntity<Void> deleteUser(//
 			@RequestHeader(name = "X-User-Id") final long executingUserId, //
 			@RequestHeader(name = "X-User-Type") final UserType executingUserType, //
-			@PathVariable final long userId) {
+			@PathVariable("userId") final long userId) {
 
 		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -144,7 +144,7 @@ public final class UserController {
 	public ResponseEntity<UserDto> getUser(//
 			@RequestHeader(name = "X-User-Id") final long executingUserId, //
 			@RequestHeader(name = "X-User-Type") final UserType executingUserType, //
-			@PathVariable final long userId) {
+			@PathVariable("userId") final long userId) {
 
 		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -159,7 +159,7 @@ public final class UserController {
 	public ResponseEntity<String> getUserType(//
 			@RequestHeader(name = "X-User-Id", required = false) final Long executingUserId, //
 			@RequestHeader(name = "X-User-Type", required = false) final UserType executingUserType, //
-			@PathVariable final long userId) {
+			@PathVariable("userId") final long userId) {
 
 		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
