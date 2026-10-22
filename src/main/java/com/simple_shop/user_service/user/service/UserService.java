@@ -1,5 +1,7 @@
 package com.simple_shop.user_service.user.service;
 
+import java.util.Objects;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,8 +70,9 @@ public final class UserService {
 		}
 	}
 
-	// TODO Deal with user already exists case
-	public User modifyUser(final User userToModify, final long executingUserId) {
+	public User modifyUser(final long userId, final User userToModify, final long executingUserId) {
+		this.validateUserToModify(userId, userToModify);
+
 		// Ensure the user exists
 		final User existingUser = this.findUserById(userToModify.getId());
 
@@ -81,6 +84,16 @@ public final class UserService {
 		this.updateCache(modifiedUser, Boolean.FALSE);
 
 		return modifiedUser;
+	}
+
+	private void validateUserToModify(final long userId, final User userToModify) {
+		if (!Objects.equals(userId, userToModify.getId())) {
+			throw new InvalidMessageException("Path ID and payload ID mismatch!");
+		}
+
+		if (userToModify.getVersion() == null) {
+			throw new InvalidMessageException("Version must not be null!");
+		}
 	}
 
 	public void deleteUser(final long userId, final long executingUserId) {
@@ -151,5 +164,16 @@ public final class UserService {
 			final RedisUserData newEntry = new RedisUserDataBuilder().setUserType(user.getUserType()).build();
 			this.redisUserService.createUserEntry(user.getId(), newEntry);
 		}
+	}
+
+	public static boolean isDataOwned(//
+			final Long executingUserId, //
+			final UserType executingUserType, //
+			final long targetedUserId) {
+
+		if (executingUserId != null && executingUserType != null) {
+			return UserType.ADMIN.equals(executingUserType) || executingUserId.equals(targetedUserId);
+		}
+		return Boolean.TRUE;
 	}
 }

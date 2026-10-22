@@ -64,19 +64,12 @@ public final class UserController {
 			@PathVariable("userId") final long userId, //
 			@RequestBody final UserDto userDto) {
 
-		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
+		if (!UserService.isDataOwned(executingUserId, executingUserType, userId)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 
 		final User userToModify = DtoMapper.toDomain(userDto, this.passwordEncoder);
-		if (!Long.valueOf(userId).equals(userToModify.getId())) {
-			throw new InvalidMessageException("Path ID and payload ID mismatch!");
-		}
-		if (userDto.getVersion() == null) {
-			throw new InvalidMessageException("Version must not be null!");
-		}
-
-		final User modifiedUser = this.userService.modifyUser(userToModify, executingUserId);
+		final User modifiedUser = this.userService.modifyUser(userId, userToModify, executingUserId);
 		final UserDto modifiedUserDto = DtoMapper.toDto(modifiedUser);
 		return ResponseEntity.status(HttpStatus.OK).body(modifiedUserDto);
 	}
@@ -91,7 +84,7 @@ public final class UserController {
 			@RequestHeader(name = "X-User-Type") final UserType executingUserType, //
 			@PathVariable("userId") final long userId) {
 
-		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
+		if (!UserService.isDataOwned(executingUserId, executingUserType, userId)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 
@@ -146,7 +139,7 @@ public final class UserController {
 			@RequestHeader(name = "X-User-Type") final UserType executingUserType, //
 			@PathVariable("userId") final long userId) {
 
-		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
+		if (!UserService.isDataOwned(executingUserId, executingUserType, userId)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 
@@ -161,22 +154,11 @@ public final class UserController {
 			@RequestHeader(name = "X-User-Type", required = false) final UserType executingUserType, //
 			@PathVariable("userId") final long userId) {
 
-		if (!UserController.isDataOwned(executingUserId, executingUserType, userId)) {
+		if (!UserService.isDataOwned(executingUserId, executingUserType, userId)) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 
 		final UserType userType = this.userService.determineUserType(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(userType.name());
-	}
-
-	private static boolean isDataOwned(//
-			final Long executingUserId, //
-			final UserType executingUserType, //
-			final long targetedUserId) {
-
-		if (executingUserId != null && executingUserType != null) {
-			return UserType.ADMIN.equals(executingUserType) || executingUserId.equals(targetedUserId);
-		}
-		return Boolean.TRUE;
 	}
 }
